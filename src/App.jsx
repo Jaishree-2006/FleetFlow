@@ -9,6 +9,8 @@ import Maintenance from './pages/Maintenance';
 import Expenses from './pages/Expenses';
 import Drivers from './pages/Drivers';
 import Analytics from './pages/Analytics';
+import SafetyScores from './pages/SafetyScores';
+import Compliance from './pages/Compliance';
 import AuthModal from './components/AuthModal';
 import RoleSelectionModal from './components/RoleSelectionModal';
 
@@ -111,6 +113,8 @@ function App() {
                     <Route path="/expenses" element={session ? <Expenses /> : <Navigate to="/" replace />} />
                     <Route path="/drivers" element={session ? <Drivers /> : <Navigate to="/" replace />} />
                     <Route path="/analytics" element={session ? <Analytics /> : <Navigate to="/" replace />} />
+                    <Route path="/safety" element={session ? <SafetyScores /> : <Navigate to="/" replace />} />
+                    <Route path="/compliance" element={session ? <Compliance /> : <Navigate to="/" replace />} />
 
                     {/* Catch all */}
                     <Route path="*" element={<Navigate to="/" replace />} />
