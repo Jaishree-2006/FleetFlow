@@ -12,7 +12,7 @@ FleetFlow is a high-performance, modular Fleet & Logistics Management System.
 - CSV/PDF export
 
 ## Tech Stack
-- Next.js (Frontend)
+- React.js (Frontend)
 - Tailwind CSS (UI)
 - Supabase (Backend, Auth, Realtime, PostgreSQL)
 - Zustand/React Context (State Management)
@@ -21,7 +21,7 @@ FleetFlow is a high-performance, modular Fleet & Logistics Management System.
 1. Clone the repo
 2. Install dependencies: `npm install`
 3. Set up Supabase project and copy env keys to `.env`
-4. Run: `npm run dev`
+4. Run: `npm start`
 
 ## Database Schema
 See `supabase/schema.sql` for full schema.
@@ -30,15 +30,16 @@ See `supabase/schema.sql` for full schema.
 See `ARCHITECTURE.md` for system design.
 
 ## Pages
-- `/` Home
-- `/login` Auth
-- `/dashboard` Command Center
-- `/vehicles` Vehicle Registry
-- `/trips` Trip Dispatcher
-- `/maintenance` Maintenance Logs
-- `/expenses` Expenses & Fuel
-- `/drivers` Driver Performance
-- `/analytics` Analytics & Reports
+/           Home (Landing)
+/dashboard  Command Center
+/vehicles   Vehicle Registry
+/trips      Trip Dispatcher
+/maintenance Maintenance Logs
+/expenses   Expenses & Fuel
+/drivers    Driver Performance
+/analytics  Analytics & Reports
+/safety     Safety Scores
+/compliance Compliance Tracker
 
 ## License
 MIT
