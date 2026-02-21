@@ -5,7 +5,7 @@ It supports multi-role access, real-time monitoring, financial tracking, and com
 
 ---
 
-## 🚀 Core Features
+##  Core Features
 
 - Supabase Authentication (Email/Password)
 - Role-Based Access Control (RBAC)
@@ -27,7 +27,7 @@ It supports multi-role access, real-time monitoring, financial tracking, and com
 
 ---
 
-## 👥 Supported User Roles
+##  Supported User Roles
 
 - Fleet Manager
 - Dispatcher
@@ -38,7 +38,7 @@ Each role has restricted access to specific modules using frontend guards and ba
 
 ---
 
-## 🧱 Tech Stack
+##  Tech Stack
 
 Frontend:
 - React.js
@@ -52,7 +52,7 @@ Backend:
 
 ---
 
-## 📦 Setup
+##  Setup
 
 1. Clone the repository  
    ```bash
@@ -80,7 +80,7 @@ Backend:
 
 ---
 
-## 🗂 Pages & Modules
+##  Pages & Modules
 
 | Route        | Module Name              | Purpose |
 |-------------|--------------------------|----------|
@@ -97,7 +97,7 @@ Backend:
 
 ---
 
-## 🔐 Security Architecture
+##  Security Architecture
 
 - Role-Based Access Control (RBAC)
 - Supabase Row-Level Security (RLS)
@@ -108,7 +108,7 @@ Backend:
 
 ---
 
-## 🗄 Database Schema
+##  Database Schema
 
 Full schema available at:
 
@@ -128,7 +128,7 @@ Includes tables for:
 
 ---
 
-## 🏗 System Architecture
+##  System Architecture
 
 See:
 
@@ -144,7 +144,7 @@ Architecture follows:
 
 ---
 
-## 📊 Advanced Capabilities
+##  Advanced Capabilities
 
 - Real-time dashboard updates
 - Automated maintenance reminders
@@ -156,6 +156,6 @@ Architecture follows:
 
 ---
 
-## 📄 License
+##  License
 
 MIT License
