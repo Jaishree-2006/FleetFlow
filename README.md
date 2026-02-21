@@ -9,7 +9,7 @@ It supports multi-role access, real-time monitoring, financial tracking, safety 
 
 ##  Live Demo
 
-[![Watch the demo](https://img.youtube.com/vi/Q8wIgyuKf68/0.jpg)](https://youtu.be/Q8wIgyuKf68)
+[![Watch the demo](https://img.youtube.com/vi/plQ88FkuGbg/0.jpg)](https://youtu.be/plQ88FkuGbg)
 
 Click the image above to watch the full system walkthrough.
 
