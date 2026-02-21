@@ -34,7 +34,6 @@ const Sidebar = () => {
                 return [
                     ...baseItems,
                     { name: 'Trip Dispatcher', path: '/trips', icon: <MapPin size={20} /> },
-                    { name: 'Live Tracking', path: '/tracking', icon: <MapPin size={20} /> },
                     { name: 'Drivers', path: '/drivers', icon: <Users size={20} /> },
                 ];
             case 'Safety Officer':
