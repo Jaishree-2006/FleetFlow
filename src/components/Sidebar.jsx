@@ -12,17 +12,55 @@ import {
     ChevronRight
 } from 'lucide-react';
 import { supabase } from '../utils/supabaseClient';
+import { useFleetStore } from '../store/useFleetStore';
 
 const Sidebar = () => {
-    const menuItems = [
-        { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
-        { name: 'Vehicle Registry', path: '/vehicles', icon: <Truck size={20} /> },
-        { name: 'Trip Dispatcher', path: '/trips', icon: <MapPin size={20} /> },
-        { name: 'Maintenance Logs', path: '/maintenance', icon: <Wrench size={20} /> },
-        { name: 'Expenses & Fuel', path: '/expenses', icon: <Fuel size={20} /> },
-        { name: 'Drivers', path: '/drivers', icon: <Users size={20} /> },
-        { name: 'Analytics', path: '/analytics', icon: <BarChart3 size={20} /> },
-    ];
+    const { userRole } = useFleetStore();
+
+    const getMenuItems = () => {
+        const baseItems = [
+            { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
+        ];
+
+        switch (userRole) {
+            case 'Fleet Manager':
+                return [
+                    ...baseItems,
+                    { name: 'Vehicle Registry', path: '/vehicles', icon: <Truck size={20} /> },
+                    { name: 'Maintenance Logs', path: '/maintenance', icon: <Wrench size={20} /> },
+                    { name: 'Reports', path: '/analytics', icon: <BarChart3 size={20} /> },
+                ];
+            case 'Dispatcher':
+                return [
+                    ...baseItems,
+                    { name: 'Trip Dispatcher', path: '/trips', icon: <MapPin size={20} /> },
+                    { name: 'Live Tracking', path: '/tracking', icon: <MapPin size={20} /> },
+                    { name: 'Drivers', path: '/drivers', icon: <Users size={20} /> },
+                ];
+            case 'Safety Officer':
+                return [
+                    ...baseItems,
+                    { name: 'Drivers', path: '/drivers', icon: <Users size={20} /> },
+                    { name: 'Safety Scores', path: '/safety', icon: <BarChart3 size={20} /> },
+                    { name: 'Compliance', path: '/compliance', icon: <Wrench size={20} /> },
+                ];
+            case 'Financial Analyst':
+                return [
+                    ...baseItems,
+                    { name: 'Expenses & Fuel', path: '/expenses', icon: <Fuel size={20} /> },
+                    { name: 'Cost Summary', path: '/analytics', icon: <BarChart3 size={20} /> },
+                ];
+            default:
+                return [
+                    ...baseItems,
+                    { name: 'Vehicle Registry', path: '/vehicles', icon: <Truck size={20} /> },
+                    { name: 'Drivers', path: '/drivers', icon: <Users size={20} /> },
+                    { name: 'Analytics', path: '/analytics', icon: <BarChart3 size={20} /> },
+                ];
+        }
+    };
+
+    const menuItems = getMenuItems();
 
     const handleLogout = async () => {
         await supabase.auth.signOut();

@@ -30,7 +30,7 @@ const LandingPage = ({ onLoginClick }) => {
     ];
 
     return (
-        <div className="min-h-screen bg-white overflow-hidden">
+        <div className="min-h-screen overflow-hidden">
             {/* Navbar */}
             <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-slate-100">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -44,7 +44,7 @@ const LandingPage = ({ onLoginClick }) => {
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center gap-8">
                         <a href="#features" className="text-slate-600 hover:text-primary-600 font-medium transition-colors">Features</a>
-                        <a href="#about" className="text-slate-600 hover:text-primary-600 font-medium transition-colors">About</a>
+
                         <button onClick={onLoginClick} className="btn-primary">Login / Sign In</button>
                     </div>
 
@@ -64,9 +64,7 @@ const LandingPage = ({ onLoginClick }) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <span className="px-4 py-1.5 bg-primary-100 text-primary-600 rounded-full text-sm font-semibold mb-6 inline-block">
-                            v1.0 is now live 🚀
-                        </span>
+
                         <h1 className="text-6xl md:text-7xl font-bold text-slate-900 mb-8 leading-[1.1] font-sans">
                             Logistics Simplified.<br />
                             <span className="text-primary-600 inline-block mt-2">Fleet Managed Smarter.</span>

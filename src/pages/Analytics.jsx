@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area, Cell } from 'recharts';
 import { Download, TrendingUp, TrendingDown, DollarSign, Activity } from 'lucide-react';
 import { useFleetStore } from '../store/useFleetStore';
 import Layout from '../components/Layout';
 import { jsPDF } from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 
 const Analytics = () => {
   const { vehicles, trips, expenses, fetchVehicles, fetchTrips, fetchExpenses } = useFleetStore();
@@ -39,7 +39,7 @@ const Analytics = () => {
   const exportPDF = () => {
     const doc = new jsPDF();
     doc.text("FleetFlow ROI Report", 14, 15);
-    doc.autoTable({
+    autoTable(doc, {
       head: [['Vehicle', 'Revenue ($)', 'Operational Cost ($)', 'ROI (%)']],
       body: vehicleROI.map(v => [v.name, v.revenue.toLocaleString(), v.cost.toLocaleString(), `${v.roi}%`]),
       startY: 20,
@@ -131,11 +131,16 @@ const Analytics = () => {
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={vehicleROI}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                  <CartesianGrid strokeDasharray="0" vertical={false} stroke="#e2e8f0" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} />
                   <Tooltip cursor={{ fill: '#f8fafc' }} />
-                  <Bar dataKey="roi" fill="#3b82f6" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="roi" radius={0} barSize={60}>
+                    {vehicleROI.map((entry, index) => {
+                      const colors = ['#2d4a77', '#3a7ca5', '#52a3b9', '#7bbbc3', '#b8e1dd'];
+                      return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
+                    })}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>

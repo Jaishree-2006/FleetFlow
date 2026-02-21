@@ -6,10 +6,9 @@ import { useFleetStore } from '../store/useFleetStore';
 import Layout from '../components/Layout';
 
 const Vehicles = () => {
-  const { vehicles, fetchVehicles, subscribeToAll } = useFleetStore();
+  const { vehicles, fetchVehicles, subscribeToAll, searchQuery, setSearchQuery } = useFleetStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('All Status');
   const [filterType, setFilterType] = useState('All Types');
 
@@ -37,14 +36,33 @@ const Vehicles = () => {
   const handleAddVehicle = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.from('vehicles').insert([
-      { ...formData, max_load: parseInt(formData.max_load), odometer: parseInt(formData.odometer), acquisition_cost: parseFloat(formData.acquisition_cost) }
-    ]);
+
+    const insertData = {
+      ...formData,
+      max_load: parseInt(formData.max_load),
+      odometer: parseInt(formData.odometer),
+      acquisition_cost: parseFloat(formData.acquisition_cost)
+    };
+
+    let { error } = await supabase.from('vehicles').insert([insertData]);
+
+    // FALLBACK: If 'type' column is missing in DB or schema cache, retry without it
+    const isColMissing = error && (
+      error.message.includes('column "type" of relation "vehicles" does not exist') ||
+      error.message.includes("'type' column of 'vehicles' in the schema cache")
+    );
+
+    if (isColMissing) {
+      console.warn('Type column missing in schema, retrying without it...');
+      const { type, ...fallbackData } = insertData;
+      const { error: retryError } = await supabase.from('vehicles').insert([fallbackData]);
+      error = retryError;
+    }
 
     if (!error) {
       setIsModalOpen(false);
-      setFormData({ name: '', plate: '', max_load: '', odometer: '', acquisition_cost: '', status: 'Available' });
-      fetchVehicles(); // Manual refresh after insert
+      setFormData({ name: '', plate: '', max_load: '', odometer: '', acquisition_cost: '', status: 'Available', type: 'Truck' });
+      fetchVehicles();
     } else {
       console.error('Error adding vehicle:', error);
       alert('Failed to register vehicle: ' + error.message);
@@ -81,8 +99,9 @@ const Vehicles = () => {
               placeholder="Search by name or plate..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 h-12 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none transition-all shadow-sm"
+              className="w-full pl-12 pr-4 h-12 bg-white border border-slate-200 rounded-xl text-slate-900 outline-none focus:ring-2 focus:ring-primary-500 transition-all shadow-sm"
             />
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Global Enabled</div>
           </div>
           <button
             onClick={() => setIsModalOpen(true)}

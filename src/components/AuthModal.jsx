@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Lock, Loader2, Github } from 'lucide-react';
+import { X, Mail, Lock, Loader2 } from 'lucide-react';
 import { supabase } from '../utils/supabaseClient';
 
 const AuthModal = ({ isOpen, onClose }) => {
@@ -143,24 +143,16 @@ const AuthModal = ({ isOpen, onClose }) => {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="flex flex-col gap-4">
                             <button
                                 type="button"
                                 onClick={() => handleSocialLogin('google')}
-                                className="flex items-center justify-center gap-3 h-14 bg-white border border-slate-100 rounded-xl hover:bg-slate-50 transition-all font-medium text-slate-700"
+                                className="flex items-center justify-center gap-3 h-14 bg-white border border-slate-100 rounded-xl hover:bg-slate-50 transition-all font-medium text-slate-700 w-full"
                             >
                                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                                     <path fill="#EA4335" d="M12.48 10.92v3.28h7.84c-.24 1.84-.92 3.32-2.12 4.4-1.2 1.08-3.08 2.08-5.72 2.08-4.52 0-8.12-3.64-8.12-8.12s3.6-8.12 8.12-8.12c2.48 0 4.36.96 5.72 2.24l2.32-2.32C18.44 2.24 15.68 1 12.48 1 6.64 1 1.92 5.72 1.92 11.56S6.64 22.12 12.48 22.12c3.12 0 5.48-1.04 7.32-2.96 1.88-1.88 2.48-4.52 2.48-6.72 0-.64-.04-1.24-.12-1.84h-9.68z" />
                                 </svg>
-                                Google
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => handleSocialLogin('github')}
-                                className="flex items-center justify-center gap-3 h-14 bg-slate-900 border border-slate-900 rounded-xl hover:bg-slate-800 transition-all font-medium text-white"
-                            >
-                                <Github className="w-5 h-5" />
-                                GitHub
+                                Continue with Google
                             </button>
                         </div>
 

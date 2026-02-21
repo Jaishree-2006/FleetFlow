@@ -7,6 +7,17 @@ export const useFleetStore = create((set, get) => ({
   trips: [],
   expenses: [],
   loading: false,
+  searchQuery: '',
+  userRole: null,
+  notifications: [
+    { id: 1, text: 'Vehicle #1024 reported high fuel consumption.', type: 'alert', time: '2h ago' },
+    { id: 2, text: 'New trip assigned to Driver John Doe.', type: 'info', time: '4h ago' },
+  ],
+
+  setSearchQuery: (query) => set({ searchQuery: query }),
+  setUserRole: (role) => set({ userRole: role }),
+  addNotification: (n) => set((state) => ({ notifications: [n, ...state.notifications] })),
+  clearNotifications: () => set({ notifications: [] }),
 
   fetchVehicles: async () => {
     const { data } = await supabase.from('vehicles').select('*').order('created_at', { ascending: false });

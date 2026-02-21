@@ -6,10 +6,9 @@ import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 
 const Drivers = () => {
-  const { drivers, fetchDrivers, subscribeToAll } = useFleetStore();
+  const { drivers, fetchDrivers, subscribeToAll, searchQuery, setSearchQuery } = useFleetStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -58,16 +57,17 @@ const Drivers = () => {
           </button>
         </div>
 
-        {/* Search Bar */}
+        {/* Global Search Feedback */}
         <div className="relative max-w-md">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
           <input
             type="text"
-            placeholder="Search drivers by name..."
+            placeholder="Search drivers..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 h-12 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none transition-all shadow-sm"
+            className="w-full pl-12 pr-4 h-12 bg-white border border-slate-200 rounded-xl text-slate-900 outline-none focus:ring-2 focus:ring-primary-500 transition-all shadow-sm"
           />
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Global Enabled</div>
         </div>
 
         {/* Drivers Grid */}

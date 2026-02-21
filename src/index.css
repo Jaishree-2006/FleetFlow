@@ -7,6 +7,10 @@
 @layer base {
   body {
     @apply bg-white text-slate-900 font-sans antialiased;
+    background-image: url("data:image/svg+xml,%3Csvg width='600' height='600' viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2394a3b8' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round' opacity='0.25'%3E%3C!-- Truck 1 --%3E%3Cg transform='translate(40, 50)'%3E%3Cpath d='M0 15h30v12h-30zM30 18l8 0l2 9l-10 0zM5 27a3 3 0 1 0 6 0a3 3 0 1 0-6 0zM25 27a3 3 0 1 0 6 0a3 3 0 1 0-6 0z'/%3E%3C/g%3E%3C!-- Car 1 --%3E%3Cg transform='translate(120, 30)'%3E%3Cpath d='M5 10h20l4 8h-28zM0 18h34l2 6h-38zM8 24a3 3 0 1 0 6 0a3 3 0 1 0-6 0zM26 24a3 3 0 1 0 6 0a3 3 0 1 0-6 0z'/%3E%3C/g%3E%3C!-- Van 1 --%3E%3Cg transform='translate(220, 60)'%3E%3Cpath d='M0 5h35v20h-35zM5 25a4 4 0 1 0 8 0a4 4 0 1 0-8 0zM25 25a4 4 0 1 0 8 0a4 4 0 1 0-8 0zM35 10h5v10h-5z'/%3E%3C/g%3E%3C!-- Lorry 1 --%3E%3Cg transform='translate(350, 20)'%3E%3Cpath d='M0 10h40v15h-40zM40 15h10v10h-10zM5 25a4 4 0 1 0 8 0a4 4 0 1 0-8 0zM20 25a4 4 0 1 0 8 0a4 4 0 1 0-8 0zM40 25a4 4 0 1 0 8 0a4 4 0 1 0-8 0z'/%3E%3C/g%3E%3C!-- Gas Pump --%3E%3Cg transform='translate(500, 40)'%3E%3Crect x='0' y='0' width='15' height='25' rx='2'/%3E%3Cpath d='M15 5h5v15M20 20a2 2 0 1 1-4 0a2 2 0 0 1 4 0z'/%3E%3C/g%3E%3C!-- Cloud 1 --%3E%3Cpath d='M80 120a8 8 0 0 1 16 0a8 8 0 0 1 16 0a8 8 0 0 1-32 0z' transform='translate(0, 0)'/%3E%3C!-- Star 1 --%3E%3Cpath d='M180 150l2 5h5l-4 3l2 5l-5-4l-5 4l2-5l-4-3h5z'/%3E%3C!-- Location 1 --%3E%3Cg transform='translate(280, 140)'%3E%3Cpath d='M0 0c-5-5-10-2-10 5s10 15 10 15s10-10 10-15s-5-10-10-5z'/%3E%3Ccircle cx='0' cy='0' r='2'/%3E%3C/g%3E%3C!-- Cone --%3E%3Cg transform='translate(400, 160)'%3E%3Cpath d='M0 20l5-15l5 15zM-5 20l20 0'/%3E%3C/g%3E%3C!-- More doodles to fill space --%3E%3Ccircle cx='50' cy='200' r='2'/%3E%3Ccircle cx='150' cy='180' r='2'/%3E%3Ccircle cx='350' cy='220' r='2'/%3E%3Ccircle cx='550' cy='160' r='2'/%3E%3C!-- Row 2 --%3E%3Cg transform='translate(30, 250)'%3E%3Crect x='0' y='0' width='20' height='20' rx='3'/%3E%3Cpath d='M0 10h20M10 0v20'/%3E%3C/g%3E%3Cg transform='translate(150, 300)'%3E%3Cpath d='M0 20h40l5-10h-50z'/%3E%3Ccircle cx='10' cy='20' r='4'/%3E%3Ccircle cx='30' cy='20' r='4'/%3E%3C/g%3E%3Cg transform='translate(300, 280)'%3E%3Cpath d='M0 10h25v12h-25zM25 5h10v17h-10z'/%3E%3Ccircle cx='8' cy='22' r='4'/%3E%3Ccircle cx='22' cy='22' r='4'/%3E%3C/g%3E%3Cg transform='translate(450, 320)'%3E%3Ccircle cx='10' cy='10' r='10'/%3E%3Cpath d='M10 0v20M0 10h20M3 3l14 14M17 3l-14 14'/%3E%3C/g%3E%3C!-- Row 3 --%3E%3Cg transform='translate(80, 450)'%3E%3Cpath d='M0 0h30v15h-30z'/%3E%3Cpath d='M30 5h10v10h-10z'/%3E%3Ccircle cx='8' cy='15' r='4'/%3E%3Ccircle cx='22' cy='15' r='4'/%3E%3C/g%3E%3Cg transform='translate(250, 480)'%3E%3Cpath d='M0 10h20l5 10h-30z'/%3E%3Ccircle cx='5' cy='20' r='4'/%3E%3Ccircle cx='15' cy='20' r='4'/%3E%3C/g%3E%3Cg transform='translate(420, 460)'%3E%3Crect x='0' y='0' width='20' height='25' rx='2'/%3E%3Cpath d='M5 5h10M5 10h10M5 15h10'/%3E%3C/g%3E%3C!-- Connecting dots --%3E%3Ccircle cx='100' cy='400' r='1.5'/%3E%3Ccircle cx='200' cy='450' r='1.5'/%3E%3Ccircle cx='400' cy='400' r='1.5'/%3E%3Ccircle cx='500' cy='500' r='1.5'/%3E%3Cpath d='M550 500l10 10M560 500l-10 10'/%3E%3C/g%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: 600px 600px;
+    background-repeat: repeat;
   }
 }
 
@@ -14,11 +18,11 @@
   .glass-card {
     @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl;
   }
-  
+
   .btn-primary {
     @apply px-6 py-2.5 bg-primary-600 text-white rounded-lg font-medium transition-all hover:bg-primary-700 hover:shadow-lg active:scale-95;
   }
-  
+
   .btn-secondary {
     @apply px-6 py-2.5 bg-white text-slate-700 border border-slate-200 rounded-lg font-medium transition-all hover:bg-slate-50 hover:shadow-md active:scale-95;
   }
@@ -27,19 +31,32 @@
     @apply px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider;
   }
 
-  .status-available { @apply bg-success-50 text-success-500 border border-success-500/20; }
-  .status-on-trip { @apply bg-primary-50 text-primary-500 border border-primary-500/20; }
-  .status-in-shop { @apply bg-warning-50 text-warning-500 border border-warning-500/20; }
-  .status-retired { @apply bg-slate-50 text-slate-500 border border-slate-200; }
+  .status-available {
+    @apply bg-success-50 text-success-500 border border-success-500/20;
+  }
+
+  .status-on-trip {
+    @apply bg-primary-50 text-primary-500 border border-primary-500/20;
+  }
+
+  .status-in-shop {
+    @apply bg-warning-50 text-warning-500 border border-warning-500/20;
+  }
+
+  .status-retired {
+    @apply bg-slate-50 text-slate-500 border border-slate-200;
+  }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   @apply bg-transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
 }

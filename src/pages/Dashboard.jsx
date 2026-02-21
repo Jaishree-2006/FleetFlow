@@ -3,16 +3,25 @@ import { motion } from 'framer-motion';
 import {
   Truck,
   Wrench,
-  Activity,
-  Package,
+  Users,
   TrendingUp,
-  AlertTriangle
+  Package,
+  Activity,
+  Search,
+  Fuel,
+  Box,
+  Calendar,
+  Clock,
+  ShieldCheck,
+  FileWarning,
+  AlertTriangle,
+  MapPin
 } from 'lucide-react';
 import { useFleetStore } from '../store/useFleetStore';
 import Layout from '../components/Layout';
 
 const Dashboard = () => {
-  const { vehicles, trips, fetchVehicles, fetchTrips, subscribeToAll } = useFleetStore();
+  const { vehicles, trips, fetchVehicles, fetchTrips, subscribeToAll, searchQuery, userRole } = useFleetStore();
   const [filterType, setFilterType] = React.useState('All Vehicle Types');
   const [filterStatus, setFilterStatus] = React.useState('All Statuses');
 
@@ -23,39 +32,58 @@ const Dashboard = () => {
     return () => unsubscribe();
   }, []);
 
-  const kpis = [
-    {
-      label: 'Active Fleet',
-      value: vehicles.filter(v => v.status === 'On Trip').length,
-      sub: 'Currently on mission',
-      icon: <Truck className="text-primary-600" />,
-      color: 'bg-primary-50',
-    },
-    {
-      label: 'Maintenance Alerts',
-      value: vehicles.filter(v => v.status === 'In Shop').length,
-      sub: 'Attention required',
-      icon: <Wrench className="text-warning-600" />,
-      color: 'bg-warning-50',
-    },
-    {
-      label: 'Utilization Rate',
-      value: vehicles.length > 0
-        ? Math.round((vehicles.filter(v => v.status === 'On Trip').length / vehicles.length) * 100)
-        : 0,
-      sub: 'Fleet performance %',
-      icon: <Activity className="text-success-600" />,
-      color: 'bg-success-50',
-      unit: '%',
-    },
-    {
-      label: 'Pending Cargo',
-      value: trips.filter(t => t.status === 'Draft').length,
-      sub: 'Ready for dispatch',
-      icon: <Package className="text-slate-600" />,
-      color: 'bg-slate-100',
-    },
-  ];
+  const getKPIs = () => {
+    const lastWeek = new Date();
+    lastWeek.setDate(lastWeek.getDate() - 7);
+
+    const fleetTrend = vehicles.length > 0
+      ? `+${Math.round((vehicles.filter(v => new Date(v.created_at) > lastWeek).length / vehicles.length) * 100)}%`
+      : '0%';
+
+    const tripTrend = trips.length > 0
+      ? `+${Math.round((trips.filter(t => new Date(t.created_at) > lastWeek).length / trips.length) * 100)}%`
+      : '0%';
+
+    switch (userRole) {
+      case 'Fleet Manager':
+        return [
+          { label: 'Total Fleet', value: vehicles.length, sub: 'Assets tracked', icon: <Truck className="text-primary-600" />, color: 'bg-primary-50', trend: fleetTrend },
+          { label: 'Maintenance', value: vehicles.filter(v => v.status === 'In Shop').length, sub: 'Attention required', icon: <Wrench className="text-warning-600" />, color: 'bg-warning-50', trend: '-12%' },
+          { label: 'Utilization', value: vehicles.length > 0 ? Math.round((vehicles.filter(v => v.status === 'On Trip').length / vehicles.length) * 100) : 0, sub: 'Fleet activity %', icon: <Activity className="text-success-600" />, color: 'bg-success-50', unit: '%', trend: '+5.4%' },
+          { label: 'Health Score', value: '94', sub: 'Average fleet health', icon: <ShieldCheck className="text-info-600" />, color: 'bg-info-50', unit: '%', trend: '+0.2%' },
+        ];
+      case 'Dispatcher':
+        return [
+          { label: 'Active Trips', value: trips.filter(t => t.status === 'In Progress').length, sub: 'Live deliveries', icon: <Package className="text-primary-600" />, color: 'bg-primary-50', trend: tripTrend },
+          { label: 'Available Drivers', value: 12, sub: 'Ready for dispatch', icon: <Users className="text-success-600" />, color: 'bg-success-50', trend: '+2' },
+          { label: 'Delayed', value: '2', sub: 'Check route status', icon: <Clock className="text-error-600" />, color: 'bg-error-50', trend: '-25%' },
+          { label: 'Pending', value: trips.filter(t => t.status === 'Draft').length, sub: 'In pipeline', icon: <Package className="text-slate-600" />, color: 'bg-slate-50', trend: '+14%' },
+        ];
+      case 'Safety Officer':
+        return [
+          { label: 'Compliance', value: '98', sub: 'Fleet-wide score', icon: <ShieldCheck className="text-success-600" />, color: 'bg-success-50', unit: '%', trend: '+1.2%' },
+          { label: 'Expired Licenses', value: '3', sub: 'Needs urgent action', icon: <FileWarning className="text-error-600" />, color: 'bg-error-50', trend: '-1' },
+          { label: 'High Risk', value: '1', sub: 'Monitor driver behavior', icon: <AlertTriangle className="text-warning-600" />, color: 'bg-warning-50', trend: 'Stable' },
+          { label: 'Incident Today', value: '0', sub: 'No reports filed', icon: <Activity className="text-slate-400" />, color: 'bg-slate-50', trend: '0%' },
+        ];
+      case 'Financial Analyst':
+        return [
+          { label: 'Fuel Spend', value: '12.4k', sub: 'This month (USD)', icon: <Fuel className="text-primary-600" />, color: 'bg-primary-50', unit: '$', trend: '-4.2%' },
+          { label: 'Maint. ROI', value: '14.2', sub: 'Historical average', icon: <TrendingUp className="text-success-600" />, color: 'bg-success-50', unit: '%', trend: '+18%' },
+          { label: 'Operational Cost', value: '45.2k', sub: 'Total overhead', icon: <Box className="text-info-600" />, color: 'bg-info-50', unit: '$', trend: '+2.1%' },
+          { label: 'Cost/Vehicle', value: '850', sub: 'Average per asset', icon: <Truck className="text-slate-600" />, color: 'bg-slate-50', unit: '$', trend: '-6.5%' },
+        ];
+      default:
+        return [
+          { label: 'Active Fleet', value: vehicles.filter(v => v.status === 'On Trip').length, sub: 'Currently on mission', icon: <Truck className="text-primary-600" />, color: 'bg-primary-50', trend: fleetTrend },
+          { label: 'Maintenance Alerts', value: vehicles.filter(v => v.status === 'In Shop').length, sub: 'Attention required', icon: <Wrench className="text-warning-600" />, color: 'bg-warning-50', trend: '-12%' },
+          { label: 'Utilization', value: vehicles.length > 0 ? Math.round((vehicles.filter(v => v.status === 'On Trip').length / vehicles.length) * 100) : 0, sub: 'Fleet activity %', icon: <Activity className="text-success-600" />, color: 'bg-success-50', unit: '%', trend: '+5.4%' },
+          { label: 'Ready Cargo', value: trips.filter(t => t.status === 'Draft').length, sub: 'Ready for dispatch', icon: <Package className="text-slate-600" />, color: 'bg-slate-100', trend: '+14%' },
+        ];
+    }
+  };
+
+  const kpis = getKPIs();
 
   return (
     <Layout title="Command Center">
@@ -74,9 +102,9 @@ const Dashboard = () => {
                 <div className={`w-12 h-12 ${kpi.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
                   {React.cloneElement(kpi.icon, { size: 24 })}
                 </div>
-                <div className="flex items-center gap-1 text-success-500 font-bold text-sm">
-                  <TrendingUp size={16} />
-                  <span>+2.4%</span>
+                <div className={`flex items-center gap-1 font-bold text-sm ${kpi.trend.startsWith('+') ? 'text-success-500' : kpi.trend.startsWith('-') ? 'text-error-500' : 'text-slate-400'}`}>
+                  {kpi.trend.startsWith('+') ? <TrendingUp size={16} /> : null}
+                  <span>{kpi.trend}</span>
                 </div>
               </div>
               <div className="space-y-1">
@@ -145,10 +173,15 @@ const Dashboard = () => {
                     .filter(t => {
                       const v = t.vehicles;
                       if (!v) return true;
+
                       const matchesStatus = filterStatus === 'All Statuses' || v.status === filterStatus;
                       const vehicleType = v.type || (v.name.toLowerCase().includes('van') || v.name.toLowerCase().includes('ford') ? 'Van' : 'Truck');
                       const matchesType = filterType === 'All Vehicle Types' || (filterType === 'Trucks' && vehicleType === 'Truck') || (filterType === 'Vans' && vehicleType === 'Van');
-                      return matchesStatus && matchesType;
+                      const matchesSearch = !searchQuery ||
+                        v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        t.drivers?.name?.toLowerCase().includes(searchQuery.toLowerCase());
+
+                      return matchesStatus && matchesType && matchesSearch;
                     })
                     .slice(0, 5)
                     .map((trip) => (
@@ -196,7 +229,9 @@ const Dashboard = () => {
                       const matchesBase = v.status === 'In Shop';
                       const vehicleType = v.type || (v.name.toLowerCase().includes('van') || v.name.toLowerCase().includes('ford') ? 'Van' : 'Truck');
                       const matchesType = filterType === 'All Vehicle Types' || (filterType === 'Trucks' && vehicleType === 'Truck') || (filterType === 'Vans' && vehicleType === 'Van');
-                      return matchesBase && matchesType;
+                      const matchesSearch = !searchQuery || v.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+                      return matchesBase && matchesType && matchesSearch;
                     })
                     .map((v) => (
                       <tr key={v.id} className="hover:bg-slate-50 transition-colors">
