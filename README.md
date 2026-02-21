@@ -1,79 +1,96 @@
-# FleetFlow
+#  FleetFlow
+
+> Logistics simplified. Fleet managed smarter.
 
 FleetFlow is a high-performance, modular Fleet & Logistics Management System built for enterprise-scale fleet operations.  
-It supports multi-role access, real-time monitoring, financial tracking, and compliance management.
+It supports multi-role access, real-time monitoring, financial tracking, safety analysis, and compliance management — all in one centralized dashboard.
+
+---
+
+##  Live Demo
+
+[![Watch the demo](https://img.youtube.com/vi/Q8wIgyuKf68/0.jpg)](https://youtu.be/Q8wIgyuKf68)
+
+Click the image above to watch the full system walkthrough.
 
 ---
 
 ##  Core Features
 
-- Supabase Authentication (Email/Password)
+- Supabase Authentication (Email/Password + Google OAuth)
 - Role-Based Access Control (RBAC)
 - Supabase Row-Level Security (RLS)
 - Real-time updates (Vehicles, Drivers, Trips)
 - Responsive UI built with Tailwind CSS
 - 10 Modular Pages
-- CRUD operations with validation
+- Full CRUD operations with validation
 - Automated lifecycle & scheduling logic
-- CSV & PDF export
+- CSV & PDF export functionality
 - Secure protected routes
 - Dynamic role-based dashboards
 - Fuel tracking & expense auditing
 - Maintenance ROI calculation
 - Driver safety score monitoring
 - License & compliance expiration alerts
-- Trip assignment automation
-- Live operational status tracking
+- Trip assignment & completion tracking
+- Live operational status indicators
 
 ---
 
 ##  Supported User Roles
 
-- Fleet Manager
-- Dispatcher
-- Safety Officer
-- Financial Analyst
+FleetFlow supports multi-role enterprise access:
 
-Each role has restricted access to specific modules using frontend guards and backend RLS policies.
+- **Fleet Manager**
+- **Dispatcher**
+- **Safety Officer**
+- **Financial Analyst**
+
+Each role has restricted module access enforced via frontend route guards and backend Supabase RLS policies.
 
 ---
 
 ##  Tech Stack
 
-Frontend:
+### Frontend
 - React.js
 - Tailwind CSS
-- Zustand / React Context
+- Zustand / React Context (State Management)
 
-Backend:
+### Backend
 - Supabase (Auth, PostgreSQL, Realtime)
 - Row-Level Security (RLS)
-- Supabase Storage (for reports & exports)
+- Supabase Storage (Reports & exports)
 
 ---
 
-##  Setup
+##  Setup Instructions
 
 1. Clone the repository  
    ```bash
    git clone https://github.com/your-username/fleetflow.git
    ```
 
-2. Install dependencies  
+2. Navigate to project folder  
+   ```bash
+   cd fleetflow
+   ```
+
+3. Install dependencies  
    ```bash
    npm install
    ```
 
-3. Create a Supabase project  
+4. Create a Supabase project  
 
-4. Add your environment variables in `.env`  
+5. Add environment variables in `.env`  
 
    ```
    VITE_SUPABASE_URL=your_project_url
    VITE_SUPABASE_ANON_KEY=your_anon_key
    ```
 
-5. Run the development server  
+6. Start development server  
    ```bash
    npm run dev
    ```
@@ -82,22 +99,24 @@ Backend:
 
 ##  Pages & Modules
 
-| Route        | Module Name              | Purpose |
-|-------------|--------------------------|----------|
-| /           | Home                     | Landing page |
-| /dashboard  | Command Center           | Role-based overview |
-| /vehicles   | Vehicle Registry         | Fleet tracking |
-| /trips      | Trip Dispatcher          | Assign & manage trips |
-| /maintenance| Maintenance Logs         | Service tracking |
-| /expenses   | Expenses & Fuel          | Financial audit |
-| /drivers    | Driver Performance       | Driver stats |
-| /analytics  | Analytics & Reports      | Insights & graphs |
-| /safety     | Safety Scores            | Risk monitoring |
-| /compliance | Compliance Tracker       | Expiration alerts |
+| Route        | Module Name            | Purpose |
+|-------------|------------------------|----------|
+| /           | Home                   | Landing page |
+| /dashboard  | Command Center         | Role-based overview |
+| /vehicles   | Vehicle Registry       | Fleet tracking & filtering |
+| /trips      | Trip Dispatcher        | Assign & manage trips |
+| /maintenance| Maintenance Logs       | Service & repair tracking |
+| /expenses   | Expenses & Fuel        | Financial monitoring |
+| /drivers    | Driver Performance     | Driver stats & records |
+| /analytics  | Analytics & Reports    | Data insights & visualizations |
+| /safety     | Safety Scores          | Risk monitoring |
+| /compliance | Compliance Tracker     | Expiration & regulation alerts |
 
 ---
 
 ##  Security Architecture
+
+FleetFlow enforces enterprise-level security using:
 
 - Role-Based Access Control (RBAC)
 - Supabase Row-Level Security (RLS)
@@ -105,6 +124,8 @@ Backend:
 - Backend validation policies
 - Restricted API access per role
 - Secure environment variable handling
+
+This ensures complete data isolation between user roles.
 
 ---
 
@@ -117,6 +138,7 @@ supabase/schema.sql
 ```
 
 Includes tables for:
+
 - Users (with roles)
 - Vehicles
 - Drivers
@@ -136,26 +158,29 @@ See:
 ARCHITECTURE.md
 ```
 
-Architecture follows:
+Architecture principles:
+
 - Modular component structure
 - Service-based data layer
 - Role-based rendering logic
-- Realtime event subscriptions
+- Real-time event subscriptions
+- Scalable enterprise design
 
 ---
 
 ##  Advanced Capabilities
 
-- Real-time dashboard updates
+- Real-time dashboard synchronization
 - Automated maintenance reminders
 - Fuel cost per vehicle analytics
 - Trip efficiency tracking
 - Driver risk scoring system
 - Compliance alert notifications
-- Scalable micro-module architecture
+- Interactive financial graphs
+- Vehicle ROI breakdown analysis
 
 ---
 
 ##  License
 
-MIT License
+This project is licensed under the MIT License.
