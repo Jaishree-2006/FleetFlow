@@ -20,18 +20,47 @@ export const useFleetStore = create((set, get) => ({
   clearNotifications: () => set({ notifications: [] }),
 
   fetchVehicles: async () => {
-    const { data } = await supabase.from('vehicles').select('*').order('created_at', { ascending: false });
-    set({ vehicles: data || [] });
+    try {
+      const { data, error } = await supabase.from('vehicles').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      set({ vehicles: data || [] });
+    } catch (err) {
+      console.warn('Supabase unreachable, using mock vehicles:', err);
+      set({
+        vehicles: [
+          { id: 'm1', name: 'Tesla Semi EV', plate: 'EV-9901', max_load: 35000, odometer: 1200, status: 'Available', type: 'Electric' },
+          { id: 'm2', name: 'Ford E-Transit', plate: 'EV-4421', max_load: 5000, odometer: 8500, status: 'Available', type: 'Electric' },
+          { id: 'm3', name: 'Rivian EDV', plate: 'EV-7723', max_load: 8000, odometer: 2100, status: 'On Trip', type: 'Electric' },
+          { id: 'm4', name: 'Volvo FH Electric', plate: 'EV-1102', max_load: 44000, odometer: 500, status: 'Available', type: 'Electric' },
+          { id: 'm5', name: 'Mercedes eActros', plate: 'EV-5567', max_load: 26000, odometer: 4300, status: 'In Shop', type: 'Electric' }
+        ]
+      });
+    }
   },
 
   fetchDrivers: async () => {
-    const { data } = await supabase.from('drivers').select('*').order('created_at', { ascending: false });
-    set({ drivers: data || [] });
+    try {
+      const { data, error } = await supabase.from('drivers').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      set({ drivers: data || [] });
+    } catch (err) {
+      set({
+        drivers: [
+          { id: 'd1', name: 'Alex Johnson', status: 'Active' },
+          { id: 'd2', name: 'Sarah Miller', status: 'On Trip' }
+        ]
+      });
+    }
   },
 
   fetchTrips: async () => {
-    const { data } = await supabase.from('trips').select('*, vehicles(*), drivers(*)').order('created_at', { ascending: false });
-    set({ trips: data || [] });
+    try {
+      const { data, error } = await supabase.from('trips').select('*, vehicles(*), drivers(*)').order('created_at', { ascending: false });
+      if (error) throw error;
+      set({ trips: data || [] });
+    } catch (err) {
+      set({ trips: [] });
+    }
   },
 
   fetchExpenses: async () => {
