@@ -154,6 +154,17 @@ const AuthModal = ({ isOpen, onClose }) => {
                                 </svg>
                                 Continue with Google
                             </button>
+
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    localStorage.setItem('role_demo-user', 'Fleet Manager');
+                                    window.location.reload();
+                                }}
+                                className="w-full h-14 bg-slate-900 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-all shadow-lg"
+                            >
+                                Try Offline Demo Mode
+                            </button>
                         </div>
 
                         <p className="text-center text-sm text-slate-400">

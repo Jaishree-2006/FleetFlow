@@ -23,11 +23,19 @@ function App() {
 
     useEffect(() => {
         const checkSession = async () => {
+            // INSTANT BYPASS: Check if we manually triggered demo mode
+            if (localStorage.getItem('role_demo-user') === 'Fleet Manager') {
+                console.log('Instant Offline Demo Mode Active');
+                setSession({ user: { id: 'demo-user', email: 'demo@fleetflow.io' } });
+                setLoading(false);
+                return;
+            }
+
             try {
                 // Set a timeout for the session check to prevent hanging
                 const sessionPromise = supabase.auth.getSession();
                 const timeoutPromise = new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('Timeout')), 3000)
+                    setTimeout(() => reject(new Error('Timeout')), 2000)
                 );
 
                 const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise]);
