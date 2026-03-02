@@ -11,6 +11,7 @@ import Drivers from './pages/Drivers';
 import Analytics from './pages/Analytics';
 import SafetyScores from './pages/SafetyScores';
 import Compliance from './pages/Compliance';
+import EVOptimizationLab from './pages/EVOptimizationLab';
 import AuthModal from './components/AuthModal';
 import RoleSelectionModal from './components/RoleSelectionModal';
 
@@ -115,6 +116,7 @@ function App() {
                     <Route path="/analytics" element={session ? <Analytics /> : <Navigate to="/" replace />} />
                     <Route path="/safety" element={session ? <SafetyScores /> : <Navigate to="/" replace />} />
                     <Route path="/compliance" element={session ? <Compliance /> : <Navigate to="/" replace />} />
+                    <Route path="/ev-lab" element={session ? <EVOptimizationLab /> : <Navigate to="/" replace />} />
 
                     {/* Catch all */}
                     <Route path="*" element={<Navigate to="/" replace />} />

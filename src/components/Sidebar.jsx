@@ -9,7 +9,8 @@ import {
     Users,
     BarChart3,
     LogOut,
-    ChevronRight
+    ChevronRight,
+    Zap
 } from 'lucide-react';
 import { supabase } from '../utils/supabaseClient';
 import { useFleetStore } from '../store/useFleetStore';
@@ -29,12 +30,14 @@ const Sidebar = () => {
                     { name: 'Vehicle Registry', path: '/vehicles', icon: <Truck size={20} /> },
                     { name: 'Maintenance Logs', path: '/maintenance', icon: <Wrench size={20} /> },
                     { name: 'Reports', path: '/analytics', icon: <BarChart3 size={20} /> },
+                    { name: 'EV Lab', path: '/ev-lab', icon: <Zap size={20} className="text-primary-500" /> },
                 ];
             case 'Dispatcher':
                 return [
                     ...baseItems,
                     { name: 'Trip Dispatcher', path: '/trips', icon: <MapPin size={20} /> },
                     { name: 'Drivers', path: '/drivers', icon: <Users size={20} /> },
+                    { name: 'EV Lab', path: '/ev-lab', icon: <Zap size={20} className="text-primary-500" /> },
                 ];
             case 'Safety Officer':
                 return [
@@ -55,6 +58,7 @@ const Sidebar = () => {
                     { name: 'Vehicle Registry', path: '/vehicles', icon: <Truck size={20} /> },
                     { name: 'Drivers', path: '/drivers', icon: <Users size={20} /> },
                     { name: 'Analytics', path: '/analytics', icon: <BarChart3 size={20} /> },
+                    { name: 'EV Lab', path: '/ev-lab', icon: <Zap size={20} className="text-primary-500" /> },
                 ];
         }
     };
