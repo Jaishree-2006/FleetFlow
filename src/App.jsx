@@ -68,6 +68,13 @@ function App() {
         const {
             data: { subscription },
         } = supabase.auth.onAuthStateChange((_event, session) => {
+            // Guard: If Demo Mode is active in storage, NEVER let Supabase clear the session
+            if (localStorage.getItem('role_demo-user') === 'Fleet Manager') {
+                console.log('Bypassing Supabase Auth listener (Demo Mode Active)');
+                setLoading(false);
+                return;
+            }
+
             setSession(session);
             if (session?.user) {
                 const savedRole = localStorage.getItem(`role_${session.user.id}`);

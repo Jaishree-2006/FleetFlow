@@ -66,7 +66,9 @@ const Sidebar = () => {
     const menuItems = getMenuItems();
 
     const handleLogout = async () => {
+        localStorage.removeItem('role_demo-user');
         await supabase.auth.signOut();
+        window.location.href = '/'; // Force a full reload to clear all states
     };
 
     return (

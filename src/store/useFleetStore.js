@@ -70,28 +70,39 @@ export const useFleetStore = create((set, get) => ({
 
   // Real-time Subscriptions
   subscribeToAll: () => {
-    const vehiclesSub = supabase.channel('vehicles_realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'vehicles' }, payload => {
-        get().fetchVehicles();
-      })
-      .subscribe();
+    // Skip real-time if in demo mode or Supabase is likely down
+    if (localStorage.getItem('role_demo-user') === 'Fleet Manager') {
+      console.log('Skipping real-time subscriptions in Demo Mode');
+      return () => { };
+    }
 
-    const driversSub = supabase.channel('drivers_realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'drivers' }, payload => {
-        get().fetchDrivers();
-      })
-      .subscribe();
+    try {
+      const vehiclesSub = supabase.channel('vehicles_realtime')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'vehicles' }, payload => {
+          get().fetchVehicles();
+        })
+        .subscribe();
 
-    const tripsSub = supabase.channel('trips_realtime')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'trips' }, payload => {
-        get().fetchTrips();
-      })
-      .subscribe();
+      const driversSub = supabase.channel('drivers_realtime')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'drivers' }, payload => {
+          get().fetchDrivers();
+        })
+        .subscribe();
 
-    return () => {
-      supabase.removeChannel(vehiclesSub);
-      supabase.removeChannel(driversSub);
-      supabase.removeChannel(tripsSub);
-    };
+      const tripsSub = supabase.channel('trips_realtime')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'trips' }, payload => {
+          get().fetchTrips();
+        })
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(vehiclesSub);
+        supabase.removeChannel(driversSub);
+        supabase.removeChannel(tripsSub);
+      };
+    } catch (err) {
+      console.error('Real-time subscription failed:', err);
+      return () => { };
+    }
   }
 }));
