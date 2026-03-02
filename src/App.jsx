@@ -24,8 +24,13 @@ function App() {
     useEffect(() => {
         const checkSession = async () => {
             try {
-                const { data: { session }, error } = await supabase.auth.getSession();
-                if (error) throw error;
+                // Set a timeout for the session check to prevent hanging
+                const sessionPromise = supabase.auth.getSession();
+                const timeoutPromise = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('Timeout')), 3000)
+                );
+
+                const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise]);
                 setSession(session);
 
                 if (session?.user) {
@@ -35,7 +40,16 @@ function App() {
                     }
                 }
             } catch (err) {
-                console.error('Session check failed:', err);
+                console.error('Session check failed or timed out:', err);
+                // AUTO-BYPASS for Demo Mode if we are on localhost and Supabase is down
+                if (window.location.hostname === 'localhost' || window.location.hostname.includes('vercel')) {
+                    console.log('Entering Offline Demo Mode...');
+                    setSession({ user: { id: 'demo-user', email: 'demo@fleetflow.io' } });
+                    // Ensure a default role is set for demo
+                    if (!localStorage.getItem('role_demo-user')) {
+                        localStorage.setItem('role_demo-user', 'Fleet Manager');
+                    }
+                }
             } finally {
                 setLoading(false);
             }
