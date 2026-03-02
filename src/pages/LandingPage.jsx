@@ -80,6 +80,16 @@ const LandingPage = ({ onLoginClick }) => {
                                 Get Started
                                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </button>
+                            <button
+                                onClick={() => {
+                                    console.log('Manual Demo Mode Triggered');
+                                    localStorage.setItem('role_demo-user', 'Fleet Manager');
+                                    window.location.reload(); // Refresh to trigger App.jsx bypass
+                                }}
+                                className="w-full sm:w-auto h-14 px-8 bg-slate-900 text-white rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-slate-800 transition-all shadow-xl shadow-slate-200"
+                            >
+                                Enter Demo Mode
+                            </button>
                         </div>
                     </motion.div>
                 </div>
