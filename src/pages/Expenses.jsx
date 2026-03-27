@@ -95,15 +95,15 @@ const Expenses = () => {
             </button>
           </div>
 
-          <div className="glass-card p-6 bg-slate-900 text-white border-none">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Top Spending Vehicle</h3>
+          <div className="glass-card p-6 bg-white border-slate-100 text-slate-900">
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Top Spending Vehicle</h3>
             {vehicleStats[0] ? (
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold">{vehicleStats[0].name}</span>
-                  <span className="text-2xl font-black text-primary-400">${vehicleStats[0].total.toLocaleString()}</span>
+                  <span className="text-2xl font-black text-primary-600">${vehicleStats[0].total.toLocaleString()}</span>
                 </div>
-                <div className="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                   <div className="h-full bg-primary-500 w-[85%]" />
                 </div>
               </div>

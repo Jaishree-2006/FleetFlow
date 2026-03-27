@@ -12,7 +12,7 @@ const Header = ({ title }) => {
         supabase.auth.getUser().then(({ data: { user } }) => {
             setProfile(user);
             if (user) {
-                const savedRole = localStorage.getItem(`role_${user.id}`);
+                const savedRole = localStorage.getItem(`role_${user.id}`) || user.user_metadata?.role;
                 setUserRole(savedRole || 'Fleet Manager');
             }
         });
@@ -89,7 +89,7 @@ const Header = ({ title }) => {
                     <div className="text-right hidden sm:block">
                         <div className="flex flex-col items-end">
                             <p className="text-sm font-bold text-slate-900 leading-none mb-1">
-                                {profile?.email?.split('@')[0] || 'User'}
+                                {localStorage.getItem(`name_${profile?.id}`) || localStorage.getItem('name_demo-user') || profile?.user_metadata?.full_name || profile?.email?.split('@')[0] || 'User'}
                             </p>
                             <div className="flex items-center gap-2">
                                 <button

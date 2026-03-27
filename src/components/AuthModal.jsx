@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Lock, Loader2 } from 'lucide-react';
+import { X, Mail, Lock, Loader2, User } from 'lucide-react';
 import { supabase } from '../utils/supabaseClient';
 
 const AuthModal = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [persona, setPersona] = useState('Fleet Manager');
     const [loading, setLoading] = useState(false);
     const [isSignUp, setIsSignUp] = useState(false);
     const [error, setError] = useState(null);
+
+    const roles = ['Fleet Manager', 'Dispatcher', 'Safety Officer', 'Financial Analyst'];
 
     const handleSocialLogin = async (provider) => {
         setLoading(true);
@@ -34,14 +38,23 @@ const AuthModal = ({ isOpen, onClose }) => {
         setError(null);
 
         if (isSignUp) {
-            const { error: signUpError } = await supabase.auth.signUp({
+            const { data, error: signUpError } = await supabase.auth.signUp({
                 email,
                 password,
+                options: {
+                    data: { full_name: name, role: persona }
+                }
             });
             if (signUpError) {
                 setError(signUpError.message);
                 setLoading(false);
             } else {
+                if (data?.user) {
+                    localStorage.setItem(`name_${data.user.id}`, name);
+                    localStorage.setItem(`role_${data.user.id}`, persona);
+                }
+                localStorage.setItem('name_demo-user', name);
+                localStorage.setItem('role_demo-user', persona);
                 alert('Account created! You can now sign in.');
                 setIsSignUp(false);
                 setLoading(false);
@@ -96,6 +109,36 @@ const AuthModal = ({ isOpen, onClose }) => {
 
                     <form onSubmit={handleAuth} className="space-y-6">
                         <div className="space-y-4">
+                            {isSignUp && (
+                                <div className="space-y-4">
+                                    <div className="relative">
+                                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                                        <input
+                                            type="text"
+                                            placeholder="Full Name"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            className="w-full pl-12 pr-4 h-14 bg-slate-50 border border-slate-100 rounded-xl focus:ring-2 focus:ring-primary-500 focus:bg-white transition-all outline-none"
+                                            required={isSignUp}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">Select Persona</label>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {roles.map((r) => (
+                                                <button
+                                                    key={r}
+                                                    type="button"
+                                                    onClick={() => setPersona(r)}
+                                                    className={`p-3 rounded-xl border-2 text-xs font-bold transition-all text-left ${persona === r ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-200'}`}
+                                                >
+                                                    {r}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                             <div className="relative">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                                 <input

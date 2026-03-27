@@ -15,8 +15,6 @@ import {
 } from 'lucide-react';
 import Layout from '../components/Layout';
 import { useFleetStore } from '../store/useFleetStore';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
 
 const EVOptimizationLab = () => {
     const { vehicles, fetchVehicles } = useFleetStore();
@@ -61,41 +59,29 @@ const EVOptimizationLab = () => {
     const handleExport = () => {
         if (!simulationData) return;
 
-        const doc = new jsPDF();
-        doc.setFontSize(22);
-        doc.setTextColor(45, 122, 255);
-        doc.text('FleetFlow AI: MCF Optimization Report', 20, 25);
-
-        doc.setFontSize(10);
-        doc.setTextColor(100, 116, 139);
-        doc.text(`VA-GAT + MILP Hybrid Model v1.0.4`, 20, 32);
-        doc.text(`Generated: ${simulationData.timestamp}`, 20, 37);
-
-        const tableData = [
+        const csvRows = [
             ['Metric', 'Optimization Result'],
-            ['Projected Net Profit', `$${simulationData.profit}`],
-            ['Grid Energy Trade Credits', `$${simulationData.gridTrading}`],
-            ['Energy Consumption Savings', `${simulationData.energySavings}%`],
-            ['Efficiency Delta (GAT)', `+${simulationData.efficiencyGain}%`],
-            ['Simulated Emergency Dispatch', simulationData.dispatchStatus],
-            ['Risk Assessment', simulationData.riskLevel]
+            ['Projected Net Profit', `"$${simulationData.profit}"`],
+            ['Grid Energy Trade Credits', `"$${simulationData.gridTrading}"`],
+            ['Energy Consumption Savings', `"${simulationData.energySavings}%"`],
+            ['Efficiency Delta (GAT)', `"+${simulationData.efficiencyGain}%"`],
+            ['Simulated Emergency Dispatch', `"${simulationData.dispatchStatus}"`],
+            ['Risk Assessment', `"${simulationData.riskLevel}"`]
         ];
 
-        doc.autoTable({
-            startY: 50,
-            head: [['Metric', 'Optimization Result']],
-            body: tableData,
-            theme: 'striped',
-            headStyles: { fillColor: [45, 122, 255] },
-            styles: { fontSize: 11, cellPadding: 5 }
-        });
-
-        doc.save(`MCF_Optimizer_Report_${Date.now()}.pdf`);
+        const csvContent = "data:text/csv;charset=utf-8," + csvRows.map(e => e.join(",")).join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `MCF_Optimizer_Report_${Date.now()}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     return (
         <Layout title="AI Fleet Optimization Lab">
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-180px)]">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-[calc(100vh-180px)]">
 
                 {/* Main Map / Planning Area */}
                 <div className="lg:col-span-3 flex flex-col gap-6">
@@ -200,7 +186,7 @@ const EVOptimizationLab = () => {
                 </div>
 
                 {/* Sidebar Controls & Simulation */}
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-6 lg:col-span-2">
                     <div className="glass-card bg-white border-slate-100 flex-1 rounded-[2rem] shadow-xl p-8 flex flex-col">
                         <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                             <Zap className="text-primary-600" size={24} />
