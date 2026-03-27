@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Users, Calendar, Award, AlertCircle, Loader2, CheckCircle2, Search } from 'lucide-react';
 import { supabase } from '../utils/supabaseClient';
 import { useFleetStore } from '../store/useFleetStore';
-import { useUser } from '../hooks/useUser';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 
 const Drivers = () => {
-  const { role } = useUser();
-  const { drivers, fetchDrivers, subscribeToAll, searchQuery, setSearchQuery, updateDriverRank } = useFleetStore();
+  const { userRole, drivers, fetchDrivers, subscribeToAll, searchQuery, setSearchQuery, updateDriverRank } = useFleetStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -98,7 +96,7 @@ const Drivers = () => {
 
                   <div className="flex items-center gap-2 mb-4">
                     <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Rank:</span>
-                    {role === 'Safety Officer' ? (
+                    {userRole === 'Safety Officer' ? (
                       <select
                         value={driver.rank || 'Unassigned'}
                         onChange={(e) => updateDriverRank(driver.id, e.target.value)}
