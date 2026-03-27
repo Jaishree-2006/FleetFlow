@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Lock, Loader2, User } from 'lucide-react';
+import { X, Mail, Lock, Loader2, User, ShieldCheck, Truck, BarChart3, ArrowRight } from 'lucide-react';
 import { supabase } from '../utils/supabaseClient';
 
 const AuthModal = ({ isOpen, onClose }) => {
@@ -12,7 +12,24 @@ const AuthModal = ({ isOpen, onClose }) => {
     const [isSignUp, setIsSignUp] = useState(false);
     const [error, setError] = useState(null);
 
-    const roles = ['Fleet Manager', 'Dispatcher', 'Safety Officer', 'Financial Analyst'];
+    const roles = [
+        {
+            title: 'Fleet Manager', description: 'Oversee vehicle health, asset lifecycle, and scheduling.',
+            icon: <Truck className="w-5 h-5" />, color: 'bg-primary-50', textColor: 'text-primary-600', borderColor: 'border-primary-100', hoverColor: 'hover:border-primary-500'
+        },
+        {
+            title: 'Dispatcher', description: 'Create trips, assign drivers, and validate cargo loads.',
+            icon: <ArrowRight className="w-5 h-5" />, color: 'bg-success-50', textColor: 'text-success-600', borderColor: 'border-success-100', hoverColor: 'hover:border-success-500'
+        },
+        {
+            title: 'Safety Officer', description: 'Monitor driver compliance and safety scores.',
+            icon: <ShieldCheck className="w-5 h-5" />, color: 'bg-warning-50', textColor: 'text-warning-600', borderColor: 'border-warning-100', hoverColor: 'hover:border-warning-500'
+        },
+        {
+            title: 'Financial Analyst', description: 'Audit fuel spend, ROI, and operational costs.',
+            icon: <BarChart3 className="w-5 h-5" />, color: 'bg-slate-100', textColor: 'text-slate-600', borderColor: 'border-slate-200', hoverColor: 'hover:border-slate-500'
+        }
+    ];
 
     const handleSocialLogin = async (provider) => {
         setLoading(true);
@@ -89,7 +106,7 @@ const AuthModal = ({ isOpen, onClose }) => {
                     initial={{ opacity: 0, scale: 0.9, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden p-8"
+                    className={`relative w-full ${isSignUp ? 'max-w-3xl' : 'max-w-md'} bg-white rounded-3xl shadow-2xl overflow-hidden p-8 transition-all duration-500`}
                 >
                     <button
                         onClick={onClose}
@@ -122,17 +139,23 @@ const AuthModal = ({ isOpen, onClose }) => {
                                             required={isSignUp}
                                         />
                                     </div>
-                                    <div className="space-y-2">
+                                    <div className="space-y-3 pt-4">
                                         <label className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">Select Persona</label>
-                                        <div className="grid grid-cols-2 gap-2">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {roles.map((r) => (
                                                 <button
-                                                    key={r}
+                                                    key={r.title}
                                                     type="button"
-                                                    onClick={() => setPersona(r)}
-                                                    className={`p-3 rounded-xl border-2 text-xs font-bold transition-all text-left ${persona === r ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-slate-100 bg-slate-50 text-slate-500 hover:border-slate-200'}`}
+                                                    onClick={() => setPersona(r.title)}
+                                                    className={`flex items-start text-left p-4 bg-white border-2 ${r.borderColor} rounded-2xl ${r.hoverColor} transition-all group ${persona === r.title ? 'shadow-xl ring-2 ring-primary-500 ring-offset-2' : ''}`}
                                                 >
-                                                    {r}
+                                                    <div className={`w-10 h-10 ${r.color} ${r.textColor} rounded-xl flex items-center justify-center mr-4 shrink-0 transition-transform ${persona === r.title ? 'scale-110' : 'group-hover:scale-110'}`}>
+                                                        {r.icon}
+                                                    </div>
+                                                    <div>
+                                                        <h3 className={`font-bold mb-1 ${persona === r.title ? 'text-primary-700' : 'text-slate-900'}`}>{r.title}</h3>
+                                                        <p className="text-slate-500 text-xs leading-relaxed hidden sm:block">{r.description}</p>
+                                                    </div>
                                                 </button>
                                             ))}
                                         </div>

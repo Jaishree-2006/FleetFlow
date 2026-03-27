@@ -58,8 +58,8 @@ const SafetyScores = () => {
         ...d,
         safetyScore: d.safety_score ?? 90,
         completionRate: d.completion_rate ?? 90,
-        speedingEvents: getSpeedingEvents(d),
-        incidents: getIncidents(d),
+        speedingEvents: d.speeding_events ?? getSpeedingEvents(d),
+        incidents: d.incidents ?? getIncidents(d),
     })).sort((a, b) => a.safetyScore - b.safetyScore);
 
     const avgScore = driversWithScores.length
@@ -220,20 +220,44 @@ const SafetyScores = () => {
                                             )}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <div className="flex items-center justify-center gap-1.5">
-                                                {driver.speedingEvents > 0
-                                                    ? <><Zap size={13} className="text-warning-500" /><span className="font-bold text-warning-600">{driver.speedingEvents}</span></>
-                                                    : <span className="text-slate-300 font-medium">—</span>
-                                                }
-                                            </div>
+                                            {userRole === 'Safety Officer' ? (
+                                                <div className="flex justify-center items-center gap-1.5">
+                                                    <Zap size={13} className="text-warning-500 -mr-1" />
+                                                    <input
+                                                        type="number" min="0" max="100"
+                                                        value={driver.speedingEvents}
+                                                        onChange={(e) => updateDriverField(driver.id, 'speeding_events', parseInt(e.target.value) || 0)}
+                                                        className="w-12 text-center text-sm font-black text-warning-600 bg-warning-50 border border-warning-200 rounded px-1 outline-none focus:ring-1 focus:ring-warning-500"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div className="flex items-center justify-center gap-1.5">
+                                                    {driver.speedingEvents > 0
+                                                        ? <><Zap size={13} className="text-warning-500" /><span className="font-bold text-warning-600">{driver.speedingEvents}</span></>
+                                                        : <span className="text-slate-300 font-medium">—</span>
+                                                    }
+                                                </div>
+                                            )}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <div className="flex items-center justify-center gap-1.5">
-                                                {driver.incidents > 0
-                                                    ? <><AlertTriangle size={13} className="text-error-500" /><span className="font-bold text-error-600">{driver.incidents}</span></>
-                                                    : <span className="text-slate-300 font-medium">—</span>
-                                                }
-                                            </div>
+                                            {userRole === 'Safety Officer' ? (
+                                                <div className="flex justify-center items-center gap-1.5">
+                                                    <AlertTriangle size={13} className="text-error-500 -mr-1" />
+                                                    <input
+                                                        type="number" min="0" max="100"
+                                                        value={driver.incidents}
+                                                        onChange={(e) => updateDriverField(driver.id, 'incidents', parseInt(e.target.value) || 0)}
+                                                        className="w-12 text-center text-sm font-black text-error-600 bg-error-50 border border-error-200 rounded px-1 outline-none focus:ring-1 focus:ring-error-500"
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div className="flex items-center justify-center gap-1.5">
+                                                    {driver.incidents > 0
+                                                        ? <><AlertTriangle size={13} className="text-error-500" /><span className="font-bold text-error-600">{driver.incidents}</span></>
+                                                        : <span className="text-slate-300 font-medium">—</span>
+                                                    }
+                                                </div>
+                                            )}
                                         </td>
                                     </motion.tr>
                                 ))}
