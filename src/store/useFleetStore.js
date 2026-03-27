@@ -46,10 +46,23 @@ export const useFleetStore = create((set, get) => ({
     } catch (err) {
       set({
         drivers: [
-          { id: 'd1', name: 'Alex Johnson', status: 'Active' },
-          { id: 'd2', name: 'Sarah Miller', status: 'On Trip' }
+          { id: 'd1', name: 'Alex Johnson', status: 'Active', rank: 'Advanced' },
+          { id: 'd2', name: 'Sarah Miller', status: 'On Trip', rank: 'Novice' }
         ]
       });
+    }
+  },
+
+  updateDriverRank: async (id, rank) => {
+    try {
+      const { error } = await supabase.from('drivers').update({ rank }).eq('id', id);
+      if (error) throw error;
+      get().fetchDrivers();
+    } catch (err) {
+      console.error('Error updating driver rank:', err);
+      set((state) => ({
+        drivers: state.drivers.map(d => d.id === id ? { ...d, rank } : d)
+      }));
     }
   },
 

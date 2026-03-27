@@ -18,6 +18,7 @@ CREATE TABLE drivers (
     name text NOT NULL,
     license_expiry date NOT NULL,
     status driver_status NOT NULL,
+    rank text DEFAULT 'Unassigned',
     created_at timestamp DEFAULT now()
 );
 

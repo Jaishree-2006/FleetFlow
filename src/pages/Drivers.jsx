@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Users, Calendar, Award, AlertCircle, Loader2, CheckCircle2, Search } from 'lucide-react';
 import { supabase } from '../utils/supabaseClient';
 import { useFleetStore } from '../store/useFleetStore';
+import { useUser } from '../hooks/useUser';
 import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 
 const Drivers = () => {
-  const { drivers, fetchDrivers, subscribeToAll, searchQuery, setSearchQuery } = useFleetStore();
+  const { role } = useUser();
+  const { drivers, fetchDrivers, subscribeToAll, searchQuery, setSearchQuery, updateDriverRank } = useFleetStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -93,6 +95,26 @@ const Drivers = () => {
                   </div>
 
                   <h3 className="text-xl font-bold text-slate-900 mb-1">{driver.name}</h3>
+
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Rank:</span>
+                    {role === 'Safety Officer' ? (
+                      <select
+                        value={driver.rank || 'Unassigned'}
+                        onChange={(e) => updateDriverRank(driver.id, e.target.value)}
+                        className="text-xs font-bold text-slate-900 bg-slate-50 border border-slate-200 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-primary-500 cursor-pointer"
+                      >
+                        <option value="Unassigned">Unassigned</option>
+                        <option value="Novice">Novice</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                        <option value="Expert">Expert</option>
+                      </select>
+                    ) : (
+                      <span className="text-xs font-bold text-slate-900 bg-slate-100 px-2 py-1 rounded">{driver.rank || 'Unassigned'}</span>
+                    )}
+                  </div>
+
                   <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-widest mb-6">
                     <Calendar size={14} /> License:
                     <span className={isExpired(driver.license_expiry) ? 'text-error-500' : 'text-slate-600'}>
