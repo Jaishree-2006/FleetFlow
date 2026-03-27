@@ -6,7 +6,7 @@ import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 
 const Drivers = () => {
-  const { userRole, drivers, fetchDrivers, subscribeToAll, searchQuery, setSearchQuery, updateDriverRank } = useFleetStore();
+  const { userRole, drivers, fetchDrivers, subscribeToAll, searchQuery, setSearchQuery, updateDriverRank, updateDriverField } = useFleetStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -115,9 +115,18 @@ const Drivers = () => {
 
                   <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase tracking-widest mb-6">
                     <Calendar size={14} /> License:
-                    <span className={isExpired(driver.license_expiry) ? 'text-error-500' : 'text-slate-600'}>
-                      {new Date(driver.license_expiry).toLocaleDateString()}
-                    </span>
+                    {userRole === 'Safety Officer' ? (
+                      <input
+                        type="date"
+                        value={driver.license_expiry}
+                        onChange={(e) => updateDriverField(driver.id, 'license_expiry', e.target.value)}
+                        className="text-xs font-bold text-slate-900 bg-slate-50 border border-slate-200 rounded px-2 py-0.5 outline-none focus:ring-1 focus:ring-primary-500"
+                      />
+                    ) : (
+                      <span className={isExpired(driver.license_expiry) ? 'text-error-500' : 'text-slate-600'}>
+                        {new Date(driver.license_expiry).toLocaleDateString()}
+                      </span>
+                    )}
                     {isExpired(driver.license_expiry) && (
                       <span className="bg-error-50 text-error-500 px-2 py-0.5 rounded text-[8px]">EXPIRED</span>
                     )}
@@ -127,28 +136,67 @@ const Drivers = () => {
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Safety Score</span>
-                        <span className="text-sm font-black text-slate-900">94%</span>
+                        {userRole === 'Safety Officer' ? (
+                          <div className="flex items-center gap-1">
+                            <input
+                              type="number" min="0" max="100"
+                              value={driver.safety_score ?? 90}
+                              onChange={(e) => updateDriverField(driver.id, 'safety_score', parseInt(e.target.value) || 0)}
+                              className="w-16 text-right text-sm font-black text-slate-900 bg-slate-50 border border-slate-200 rounded px-1 outline-none focus:ring-1 focus:ring-primary-500"
+                            />
+                            <span className="text-sm font-black text-slate-900">%</span>
+                          </div>
+                        ) : (
+                          <span className="text-sm font-black text-slate-900">{driver.safety_score ?? 90}%</span>
+                        )}
                       </div>
                       <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                        <div className="h-full bg-success-500 w-[94%]" />
+                        <div className="h-full bg-success-500" style={{ width: `${driver.safety_score ?? 90}%` }} />
                       </div>
                     </div>
                     <div>
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Completion Rate</span>
-                        <span className="text-sm font-black text-slate-900">98%</span>
+                        {userRole === 'Safety Officer' ? (
+                          <div className="flex items-center gap-1">
+                            <input
+                              type="number" min="0" max="100"
+                              value={driver.completion_rate ?? 90}
+                              onChange={(e) => updateDriverField(driver.id, 'completion_rate', parseInt(e.target.value) || 0)}
+                              className="w-16 text-right text-sm font-black text-slate-900 bg-slate-50 border border-slate-200 rounded px-1 outline-none focus:ring-1 focus:ring-primary-500"
+                            />
+                            <span className="text-sm font-black text-slate-900">%</span>
+                          </div>
+                        ) : (
+                          <span className="text-sm font-black text-slate-900">{driver.completion_rate ?? 90}%</span>
+                        )}
                       </div>
                       <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                        <div className="h-full bg-primary-500 w-[98%]" />
+                        <div className="h-full bg-primary-500" style={{ width: `${driver.completion_rate ?? 90}%` }} />
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-slate-50 flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-success-500 font-bold text-xs bg-success-50 px-3 py-1.5 rounded-lg">
-                    <Award size={14} /> Elite Status
-                  </div>
+                  {userRole === 'Safety Officer' ? (
+                    <button
+                      onClick={() => updateDriverField(driver.id, 'elite_status', !(driver.elite_status ?? false))}
+                      className={`flex items-center gap-2 font-bold text-xs px-3 py-1.5 rounded-lg transition-colors ${driver.elite_status ? 'text-success-500 bg-success-50' : 'text-slate-400 bg-slate-100 hover:bg-slate-200'}`}
+                    >
+                      <Award size={14} /> {driver.elite_status ? 'Elite Status' : 'Mark as Elite'}
+                    </button>
+                  ) : (
+                    driver.elite_status ? (
+                      <div className="flex items-center gap-2 text-success-500 font-bold text-xs bg-success-50 px-3 py-1.5 rounded-lg">
+                        <Award size={14} /> Elite Status
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 text-slate-400 font-bold text-xs bg-slate-50 px-3 py-1.5 rounded-lg">
+                        Standard Status
+                      </div>
+                    )
+                  )}
                   <button className="text-slate-400 hover:text-primary-600 transition-colors">
                     <Plus className="rotate-45 w-5 h-5" />
                   </button>

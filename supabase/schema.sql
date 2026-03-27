@@ -19,6 +19,9 @@ CREATE TABLE drivers (
     license_expiry date NOT NULL,
     status driver_status NOT NULL,
     rank text DEFAULT 'Unassigned',
+    safety_score integer DEFAULT 90,
+    completion_rate integer DEFAULT 90,
+    elite_status boolean DEFAULT false,
     created_at timestamp DEFAULT now()
 );
 

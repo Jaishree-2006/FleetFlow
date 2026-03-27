@@ -46,10 +46,23 @@ export const useFleetStore = create((set, get) => ({
     } catch (err) {
       set({
         drivers: [
-          { id: 'd1', name: 'Alex Johnson', status: 'Active', rank: 'Advanced' },
-          { id: 'd2', name: 'Sarah Miller', status: 'On Trip', rank: 'Novice' }
+          { id: 'd1', name: 'Alex Johnson', status: 'Active', rank: 'Advanced', safety_score: 95, completion_rate: 99, elite_status: true },
+          { id: 'd2', name: 'Sarah Miller', status: 'On Trip', rank: 'Novice', safety_score: 85, completion_rate: 90, elite_status: false }
         ]
       });
+    }
+  },
+
+  updateDriverField: async (id, field, value) => {
+    try {
+      const { error } = await supabase.from('drivers').update({ [field]: value }).eq('id', id);
+      if (error) throw error;
+      get().fetchDrivers();
+    } catch (err) {
+      console.error(`Error updating driver ${field}:`, err);
+      set((state) => ({
+        drivers: state.drivers.map(d => d.id === id ? { ...d, [field]: value } : d)
+      }));
     }
   },
 
