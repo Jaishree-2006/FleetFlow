@@ -192,9 +192,7 @@ const Drivers = () => {
                         <Award size={14} /> Elite Status
                       </div>
                     ) : (
-                      <div className="flex items-center gap-2 text-slate-400 font-bold text-xs bg-slate-50 px-3 py-1.5 rounded-lg">
-                        Standard Status
-                      </div>
+                      <div />
                     )
                   )}
                   <button className="text-slate-400 hover:text-primary-600 transition-colors">
