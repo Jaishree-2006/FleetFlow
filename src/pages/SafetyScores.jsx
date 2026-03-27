@@ -14,10 +14,6 @@ import Layout from '../components/Layout';
 import { useFleetStore } from '../store/useFleetStore';
 
 // Deterministic "random" score based on driver id/name
-const getSafetyScore = (driver) => {
-    const seed = driver.name.charCodeAt(0) + driver.name.length;
-    return 65 + (seed * 17 + 11) % 35; // 65–99
-};
 const getSpeedingEvents = (driver) => {
     const seed = driver.name.charCodeAt(1) || driver.name.charCodeAt(0);
     return (seed * 3) % 8;
@@ -50,7 +46,7 @@ const ScoreBar = ({ score }) => {
 };
 
 const SafetyScores = () => {
-    const { drivers, fetchDrivers, subscribeToAll } = useFleetStore();
+    const { userRole, drivers, fetchDrivers, subscribeToAll, updateDriverField } = useFleetStore();
 
     useEffect(() => {
         fetchDrivers();
@@ -60,7 +56,8 @@ const SafetyScores = () => {
 
     const driversWithScores = drivers.map((d) => ({
         ...d,
-        safetyScore: getSafetyScore(d),
+        safetyScore: d.safety_score ?? 90,
+        completionRate: d.completion_rate ?? 90,
         speedingEvents: getSpeedingEvents(d),
         incidents: getIncidents(d),
     })).sort((a, b) => a.safetyScore - b.safetyScore);
@@ -162,8 +159,9 @@ const SafetyScores = () => {
                                 <tr>
                                     <th className="px-6 py-4">Driver</th>
                                     <th className="px-6 py-4">Status</th>
-                                    <th className="px-6 py-4 w-48">Safety Score</th>
-                                    <th className="px-6 py-4 text-center">Score</th>
+                                    <th className="px-6 py-4 w-48">Safety Bar</th>
+                                    <th className="px-6 py-4 text-center">Safety Score</th>
+                                    <th className="px-6 py-4 text-center">Completion Rate</th>
                                     <th className="px-6 py-4 text-center">Speeding Events</th>
                                     <th className="px-6 py-4 text-center">Incidents</th>
                                 </tr>
@@ -198,7 +196,28 @@ const SafetyScores = () => {
                                             <ScoreBar score={driver.safetyScore} />
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <ScoreBadge score={driver.safetyScore} />
+                                            {userRole === 'Safety Officer' ? (
+                                                <input
+                                                    type="number" min="0" max="100"
+                                                    value={driver.safetyScore}
+                                                    onChange={(e) => updateDriverField(driver.id, 'safety_score', parseInt(e.target.value) || 0)}
+                                                    className="w-16 text-center text-sm font-black text-slate-900 bg-slate-50 border border-slate-200 rounded px-1 outline-none focus:ring-1 focus:ring-primary-500"
+                                                />
+                                            ) : (
+                                                <ScoreBadge score={driver.safetyScore} />
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                            {userRole === 'Safety Officer' ? (
+                                                <input
+                                                    type="number" min="0" max="100"
+                                                    value={driver.completionRate}
+                                                    onChange={(e) => updateDriverField(driver.id, 'completion_rate', parseInt(e.target.value) || 0)}
+                                                    className="w-16 text-center text-sm font-black text-slate-900 bg-slate-50 border border-slate-200 rounded px-1 outline-none focus:ring-1 focus:ring-primary-500"
+                                                />
+                                            ) : (
+                                                <span className="font-bold text-slate-700">{driver.completionRate}%</span>
+                                            )}
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             <div className="flex items-center justify-center gap-1.5">
