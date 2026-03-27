@@ -53,6 +53,19 @@ export const useFleetStore = create((set, get) => ({
     }
   },
 
+  removeDriver: async (id) => {
+    try {
+      const { error } = await supabase.from('drivers').delete().eq('id', id);
+      if (error) throw error;
+      get().fetchDrivers();
+    } catch (err) {
+      console.error('Error deleting driver:', err);
+      set((state) => ({
+        drivers: state.drivers.filter(d => d.id !== id)
+      }));
+    }
+  },
+
   updateDriverField: async (id, field, value) => {
     try {
       const { error } = await supabase.from('drivers').update({ [field]: value }).eq('id', id);

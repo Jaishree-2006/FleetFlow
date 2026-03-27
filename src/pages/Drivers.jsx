@@ -6,7 +6,7 @@ import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 
 const Drivers = () => {
-  const { userRole, drivers, fetchDrivers, subscribeToAll, searchQuery, setSearchQuery, updateDriverRank, updateDriverField } = useFleetStore();
+  const { userRole, drivers, fetchDrivers, subscribeToAll, searchQuery, setSearchQuery, updateDriverRank, updateDriverField, removeDriver } = useFleetStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -195,9 +195,18 @@ const Drivers = () => {
                       <div />
                     )
                   )}
-                  <button className="text-slate-400 hover:text-primary-600 transition-colors">
-                    <Plus className="rotate-45 w-5 h-5" />
-                  </button>
+                  {userRole === 'Safety Officer' && (
+                    <button
+                      onClick={() => {
+                        if (window.confirm(`Are you sure you want to remove driver ${driver.name}?`)) {
+                          removeDriver(driver.id);
+                        }
+                      }}
+                      className="text-slate-400 hover:text-error-600 transition-colors"
+                    >
+                      <Plus className="rotate-45 w-5 h-5" />
+                    </button>
+                  )}
                 </div>
               </motion.div>
             ))}
