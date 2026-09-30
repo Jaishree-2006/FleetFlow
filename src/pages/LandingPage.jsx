@@ -49,10 +49,26 @@ const LandingPage = ({ onLoginClick }) => {
                     </div>
 
                     {/* Mobile Menu Button */}
-                    <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                        {isMenuOpen ? <X /> : <Menu />}
+                    <button
+                        className="md:hidden p-2 rounded-xl hover:bg-slate-100 transition-colors"
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    >
+                        {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
                     </button>
                 </div>
+
+                {/* Mobile Menu Dropdown */}
+                {isMenuOpen && (
+                    <div className="md:hidden px-6 pb-4 border-t border-slate-100 flex flex-col gap-3 pt-4">
+                        <a href="#features" className="text-slate-600 font-medium py-2" onClick={() => setIsMenuOpen(false)}>Features</a>
+                        <button
+                            onClick={() => { setIsMenuOpen(false); onLoginClick(); }}
+                            className="btn-primary w-full h-12 text-base"
+                        >
+                            Login / Sign In
+                        </button>
+                    </div>
+                )}
             </nav>
 
             {/* Hero Section */}
@@ -65,7 +81,7 @@ const LandingPage = ({ onLoginClick }) => {
                         transition={{ duration: 0.6 }}
                     >
 
-                        <h1 className="text-6xl md:text-7xl font-bold text-slate-900 mb-8 leading-[1.1] font-sans">
+                        <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-slate-900 mb-6 md:mb-8 leading-[1.1] font-sans">
                             Logistics Simplified.<br />
                             <span className="text-primary-600 inline-block mt-2">Fleet Managed Smarter.</span>
                         </h1>
@@ -100,7 +116,7 @@ const LandingPage = ({ onLoginClick }) => {
                     <h2 className="text-3xl font-bold text-slate-900 mb-4">Enterprise-Grade Fleet Control</h2>
                     <p className="text-slate-600">Powerful tools designed for scale and precision.</p>
                 </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                     {features.map((feature, index) => (
                         <motion.div
                             key={index}

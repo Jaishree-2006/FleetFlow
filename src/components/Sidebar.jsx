@@ -72,7 +72,7 @@ const Sidebar = () => {
     };
 
     return (
-        <aside className="fixed left-0 top-0 h-screen w-72 bg-white border-r border-slate-100 flex flex-col z-40">
+        <aside className="hidden md:flex fixed left-0 top-0 h-screen w-72 bg-white border-r border-slate-100 flex-col z-40">
             <div className="h-20 flex items-center px-8 border-b border-slate-50 gap-3">
                 <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center">
                     <Truck className="text-white w-6 h-6" />

@@ -143,8 +143,67 @@ const Vehicles = () => {
           </button>
         </div>
 
-        {/* Vehicles Table */}
-        <div className="glass-card bg-white border-slate-100 overflow-hidden">
+        {/* Vehicles — Mobile Cards */}
+        <div className="md:hidden space-y-3">
+          {filteredVehicles.length > 0 ? filteredVehicles.map((vehicle) => {
+            const vehicleType = vehicle.type || (vehicle.name.toLowerCase().includes('van') || vehicle.name.toLowerCase().includes('ford') ? 'Van' : 'Truck');
+            return (
+              <motion.div
+                key={vehicle.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <div className="font-bold text-slate-900">{vehicle.name}</div>
+                    <div className="text-[10px] text-blue-500 font-extrabold uppercase tracking-widest flex items-center gap-1 mt-0.5">
+                      <Truck size={10} /> {vehicleType}
+                    </div>
+                  </div>
+                  <span className={`status-pill ${vehicle.status === 'Available' ? 'status-available' :
+                    vehicle.status === 'On Trip' ? 'status-on-trip' :
+                    vehicle.status === 'In Shop' ? 'status-in-shop' : 'status-retired'}`}>
+                    {vehicle.status}
+                  </span>
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-xs mb-3">
+                  <div className="bg-slate-50 rounded-xl p-2 text-center">
+                    <div className="text-slate-400 font-medium mb-0.5">Plate</div>
+                    <div className="font-bold text-slate-700">{vehicle.plate}</div>
+                  </div>
+                  <div className="bg-slate-50 rounded-xl p-2 text-center">
+                    <div className="text-slate-400 font-medium mb-0.5">Max Load</div>
+                    <div className="font-bold text-slate-700">{vehicle.max_load?.toLocaleString()} kg</div>
+                  </div>
+                  <div className="bg-slate-50 rounded-xl p-2 text-center">
+                    <div className="text-slate-400 font-medium mb-0.5">Odometer</div>
+                    <div className="font-bold text-slate-700">{vehicle.odometer?.toLocaleString()} km</div>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button className="flex-1 h-9 text-xs font-bold text-blue-600 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors flex items-center justify-center gap-1">
+                    <Edit2 size={14} /> Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteVehicle(vehicle.id)}
+                    className="flex-1 h-9 text-xs font-bold text-red-500 bg-red-50 rounded-xl hover:bg-red-100 transition-colors flex items-center justify-center gap-1"
+                  >
+                    <Trash2 size={14} /> Retire
+                  </button>
+                </div>
+              </motion.div>
+            );
+          }) : (
+            <div className="py-16 text-center text-slate-400">
+              <Truck className="w-10 h-10 mx-auto mb-2 text-slate-200" />
+              <p className="italic text-sm">No vehicles found.</p>
+            </div>
+          )}
+        </div>
+
+        {/* Vehicles — Desktop Table */}
+        <div className="hidden md:block glass-card bg-white border-slate-100 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead className="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
@@ -170,13 +229,12 @@ const Vehicles = () => {
                           </div>
                         </td>
                         <td className="px-8 py-6 text-slate-500 font-medium">{vehicle.plate}</td>
-                        <td className="px-8 py-6 text-slate-500">{vehicle.max_load.toLocaleString()} kg</td>
-                        <td className="px-8 py-6 text-slate-500">{vehicle.odometer.toLocaleString()} km</td>
+                        <td className="px-8 py-6 text-slate-500">{vehicle.max_load?.toLocaleString()} kg</td>
+                        <td className="px-8 py-6 text-slate-500">{vehicle.odometer?.toLocaleString()} km</td>
                         <td className="px-8 py-6">
                           <span className={`status-pill ${vehicle.status === 'Available' ? 'status-available' :
                             vehicle.status === 'On Trip' ? 'status-on-trip' :
-                              vehicle.status === 'In Shop' ? 'status-in-shop' : 'status-retired'
-                            }`}>
+                            vehicle.status === 'In Shop' ? 'status-in-shop' : 'status-retired'}`}>
                             {vehicle.status}
                           </span>
                         </td>
@@ -228,23 +286,23 @@ const Vehicles = () => {
       </div>
 
       {/* Add Vehicle Modal */}
-      {
-        isModalOpen && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-8"
-            >
-              <div className="flex justify-between items-center mb-8">
-                <h2 className="text-2xl font-bold text-slate-900">Add New Vehicle</h2>
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center bg-slate-900/40 backdrop-blur-sm">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-t-3xl md:rounded-3xl shadow-2xl w-full md:max-w-2xl max-h-[90vh] overflow-y-auto"
+          >
+            <div className="p-6 md:p-8">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl md:text-2xl font-bold text-slate-900">Add New Vehicle</h2>
                 <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-slate-100 rounded-full">
                   <Plus className="rotate-45" />
                 </button>
               </div>
 
-              <form onSubmit={handleAddVehicle} className="grid grid-cols-2 gap-6">
-                <div className="space-y-2 col-span-2">
+              <form onSubmit={handleAddVehicle} className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div className="space-y-2 md:col-span-2">
                   <label className="text-sm font-bold text-slate-700">Vehicle Name / Model</label>
                   <input
                     required
@@ -309,8 +367,7 @@ const Vehicles = () => {
                     className="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none transition-all"
                   />
                 </div>
-
-                <div className="col-span-2 pt-4 flex gap-4">
+                <div className="md:col-span-2 pt-2 flex gap-4">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
@@ -327,10 +384,10 @@ const Vehicles = () => {
                   </button>
                 </div>
               </form>
-            </motion.div>
-          </div>
-        )
-      }
+            </div>
+          </motion.div>
+        </div>
+      )}
     </Layout >
   );
 };

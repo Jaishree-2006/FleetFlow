@@ -49,65 +49,65 @@ const Analytics = () => {
 
   return (
     <Layout title="Analytics & Reports">
-      <div className="space-y-10">
+      <div className="space-y-6 md:space-y-10">
         {/* Top Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="glass-card p-6 bg-white border-slate-100">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+          <div className="glass-card p-4 md:p-6 bg-white border-slate-100">
             <p className="text-xs font-bold text-slate-400 uppercase mb-2 tracking-widest">Efficiency Rate</p>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center">
-                <Activity className="text-primary-600" />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary-50 rounded-xl flex items-center justify-center shrink-0">
+                <Activity className="text-primary-600 w-5 h-5 md:w-6 md:h-6" />
               </div>
               <div>
-                <span className="text-2xl font-black text-slate-900">8.4 km/L</span>
-                <p className="text-xs text-success-500 font-bold">+1.2% v. Prev Month</p>
+                <span className="text-xl md:text-2xl font-black text-slate-900">8.4 km/L</span>
+                <p className="text-[11px] text-success-500 font-bold">+1.2% v. Prev Month</p>
               </div>
             </div>
           </div>
-          <div className="glass-card p-6 bg-white border-slate-100">
+          <div className="glass-card p-4 md:p-6 bg-white border-slate-100">
             <p className="text-xs font-bold text-slate-400 uppercase mb-2 tracking-widest">Total Net Profit</p>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-success-50 rounded-xl flex items-center justify-center">
-                <DollarSign className="text-success-600" />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-success-50 rounded-xl flex items-center justify-center shrink-0">
+                <DollarSign className="text-success-600 w-5 h-5 md:w-6 md:h-6" />
               </div>
               <div>
-                <span className="text-2xl font-black text-slate-900">
+                <span className="text-xl md:text-2xl font-black text-slate-900">
                   ${(trips.reduce((s, t) => s + parseFloat(t.revenue || 0), 0) - expenses.reduce((s, e) => s + parseFloat(e.amount || 0), 0)).toLocaleString()}
                 </span>
-                <p className="text-xs text-success-500 font-bold">+18.5% v. Prev Month</p>
+                <p className="text-[11px] text-success-500 font-bold">+18.5% v. Prev Month</p>
               </div>
             </div>
           </div>
-          <div className="glass-card p-6 bg-white border-slate-100 flex items-center justify-between group">
+          <div className="glass-card p-4 md:p-6 bg-white border-slate-100 flex items-center justify-between col-span-1 sm:col-span-2 md:col-span-1">
             <div className="flex-1">
-              <p className="text-xs font-bold text-slate-400 uppercase mb-2 tracking-widest">Reports & Archive</p>
-              <p className="text-xs text-slate-500 mb-6">Extract operational data to CSV or PDF formats.</p>
-              <div className="flex gap-3">
+              <p className="text-xs font-bold text-slate-400 uppercase mb-1 tracking-widest">Reports & Archive</p>
+              <p className="text-xs text-slate-500 mb-3">Export operational data</p>
+              <div className="flex gap-2">
                 <button
                   onClick={exportCSV}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 text-[10px] font-bold rounded-xl transition-all flex items-center gap-2 uppercase tracking-wider"
+                  className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-[10px] font-bold rounded-xl transition-all flex items-center gap-1.5 uppercase tracking-wider"
                 >
-                  <Download size={14} /> CSV
+                  <Download size={13} /> CSV
                 </button>
                 <button
                   onClick={exportPDF}
-                  className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-bold rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-primary-500/20 uppercase tracking-wider"
+                  className="px-3 py-1.5 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-primary-500/20 uppercase tracking-wider"
                 >
-                  <Download size={14} /> PDF
+                  <Download size={13} /> PDF
                 </button>
               </div>
             </div>
-            <div className="w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <TrendingUp size={32} className="text-primary-600" />
+            <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center shrink-0 ml-3">
+              <TrendingUp size={24} className="text-primary-600" />
             </div>
           </div>
         </div>
 
         {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="glass-card p-8 bg-white border-slate-100">
-            <h3 className="font-bold text-slate-900 mb-8">Revenue vs. Expense Trend</h3>
-            <div className="h-64">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
+          <div className="glass-card p-4 md:p-8 bg-white border-slate-100">
+            <h3 className="font-bold text-slate-900 mb-4 md:mb-8 text-sm md:text-base">Revenue vs. Expense Trend</h3>
+            <div className="h-56 md:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={vehicleROI}>
                   <defs>
@@ -126,16 +126,16 @@ const Analytics = () => {
             </div>
           </div>
 
-          <div className="glass-card p-8 bg-white border-slate-100">
-            <h3 className="font-bold text-slate-900 mb-8">Vehicle ROI Analysis (%)</h3>
-            <div className="h-64">
+          <div className="glass-card p-4 md:p-8 bg-white border-slate-100">
+            <h3 className="font-bold text-slate-900 mb-4 md:mb-8 text-sm md:text-base">Vehicle ROI Analysis (%)</h3>
+            <div className="h-56 md:h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={vehicleROI}>
                   <CartesianGrid strokeDasharray="0" vertical={false} stroke="#e2e8f0" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10 }} />
                   <Tooltip cursor={{ fill: '#f8fafc' }} />
-                  <Bar dataKey="roi" radius={0} barSize={60}>
+                  <Bar dataKey="roi" radius={0} barSize={40}>
                     {vehicleROI.map((entry, index) => {
                       const colors = ['#2d4a77', '#3a7ca5', '#52a3b9', '#7bbbc3', '#b8e1dd'];
                       return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />;
@@ -147,37 +147,68 @@ const Analytics = () => {
           </div>
         </div>
 
-        {/* ROI Table */}
-        <div className="glass-card bg-white border-slate-100 overflow-hidden">
-          <div className="p-6 border-b border-slate-50 flex items-center justify-between">
-            <h2 className="font-bold text-slate-900">Vehicle ROI Breakdown</h2>
+        {/* ROI Breakdown */}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between px-1">
+            <h2 className="font-bold text-slate-900 text-base md:text-lg">Vehicle ROI Breakdown</h2>
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Real-Time Aggregation</span>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
-                <tr>
-                  <th className="px-8 py-5">Vehicle Name</th>
-                  <th className="px-8 py-5">Total Revenue</th>
-                  <th className="px-8 py-5">Operational Cost</th>
-                  <th className="px-8 py-5 text-right">ROI %</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50">
-                {vehicleROI.map((v) => (
-                  <tr key={v.name} className="hover:bg-slate-50/50 transition-colors">
-                    <td className="px-8 py-6 font-bold text-slate-900">{v.name}</td>
-                    <td className="px-8 py-6 text-slate-900 font-medium">${v.revenue.toLocaleString()}</td>
-                    <td className="px-8 py-6 text-slate-500">${v.cost.toLocaleString()}</td>
-                    <td className="px-8 py-6 text-right">
-                      <span className={`font-black text-lg ${v.roi > 0 ? 'text-success-500' : 'text-error-500'}`}>
-                        {v.roi}%
-                      </span>
-                    </td>
+
+          {/* ROI — Mobile Cards */}
+          <div className="md:hidden space-y-3">
+            {vehicleROI.map((v) => (
+              <div key={v.name} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-slate-900 text-sm">{v.name}</span>
+                  <span className={`font-black text-base ${v.roi > 0 ? 'text-success-500' : 'text-error-500'}`}>
+                    {v.roi}% ROI
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-50">
+                  <div>
+                    <span className="text-[10px] text-slate-400 block font-semibold uppercase">Revenue</span>
+                    <span className="font-bold text-slate-800">${v.revenue.toLocaleString()}</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-400 block font-semibold uppercase">Operating Cost</span>
+                    <span className="font-bold text-slate-600">${v.cost.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {vehicleROI.length === 0 && (
+              <div className="text-center py-6 text-sm text-slate-400">No vehicle data available.</div>
+            )}
+          </div>
+
+          {/* ROI Table — Desktop */}
+          <div className="hidden md:block glass-card bg-white border-slate-100 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead className="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                  <tr>
+                    <th className="px-8 py-5">Vehicle Name</th>
+                    <th className="px-8 py-5">Total Revenue</th>
+                    <th className="px-8 py-5">Operational Cost</th>
+                    <th className="px-8 py-5 text-right">ROI %</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-slate-50">
+                  {vehicleROI.map((v) => (
+                    <tr key={v.name} className="hover:bg-slate-50/50 transition-colors">
+                      <td className="px-8 py-6 font-bold text-slate-900">{v.name}</td>
+                      <td className="px-8 py-6 text-slate-900 font-medium">${v.revenue.toLocaleString()}</td>
+                      <td className="px-8 py-6 text-slate-500">${v.cost.toLocaleString()}</td>
+                      <td className="px-8 py-6 text-right">
+                        <span className={`font-black text-lg ${v.roi > 0 ? 'text-success-500' : 'text-error-500'}`}>
+                          {v.roi}%
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

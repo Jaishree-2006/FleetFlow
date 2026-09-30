@@ -78,10 +78,10 @@ const Maintenance = () => {
 
   return (
     <Layout title="Maintenance Logs">
-      <div className="space-y-8">
-        <div className="flex justify-between items-center px-2">
+      <div className="space-y-6 md:space-y-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 px-1">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-warning-50 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-warning-50 rounded-xl flex items-center justify-center shrink-0">
               <ServiceIcon className="text-warning-600 w-6 h-6" />
             </div>
             <div>
@@ -89,20 +89,10 @@ const Maintenance = () => {
               <p className="text-xs text-slate-500 font-medium">Automatic "In Shop" status management</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="relative hidden md:block">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-              <input
-                type="text"
-                placeholder="Search by vehicle..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 pr-4 h-10 w-48 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-warning-500 transition-all shadow-sm"
-              />
-            </div>
+          <div className="flex items-center gap-3 w-full sm:w-auto">
             <button
               onClick={() => setIsModalOpen(true)}
-              className="btn-primary flex items-center gap-2"
+              className="btn-primary flex items-center justify-center gap-2 w-full sm:w-auto"
             >
               <Plus size={20} />
               Log Maintenance
@@ -110,8 +100,41 @@ const Maintenance = () => {
           </div>
         </div>
 
-        {/* Maintenance History */}
-        <div className="glass-card bg-white border-slate-100 overflow-hidden">
+        {/* Maintenance Logs — Mobile Cards */}
+        <div className="md:hidden space-y-3">
+          {maintenanceLogs
+            .filter(log =>
+              log.vehicles?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+            .map((log) => (
+              <div key={log.id} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="font-bold text-slate-900 text-sm">{log.vehicles?.name}</div>
+                  <span className={`status-pill ${log.vehicles?.status === 'In Shop' ? 'status-in-shop' : 'status-available'}`}>
+                    {log.vehicles?.status === 'In Shop' ? 'Under Repair' : 'Functional'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-slate-500 pt-1 border-t border-slate-50">
+                  <span>{new Date(log.created_at).toLocaleDateString()}</span>
+                  <span className="font-bold text-slate-900 text-sm">${log.amount.toLocaleString()}</span>
+                </div>
+                {log.vehicles?.status === 'In Shop' && (
+                  <button
+                    onClick={() => markCompleted(log.vehicles.id)}
+                    className="w-full py-2 bg-success-500 text-white text-xs font-bold rounded-xl hover:bg-success-600 transition-all flex items-center justify-center gap-2"
+                  >
+                    <CheckCircle2 size={14} /> Mark Completed
+                  </button>
+                )}
+              </div>
+            ))}
+          {maintenanceLogs.length === 0 && (
+            <div className="text-center py-8 text-sm text-slate-400">No maintenance logs found.</div>
+          )}
+        </div>
+
+        {/* Maintenance History — Desktop */}
+        <div className="hidden md:block glass-card bg-white border-slate-100 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead className="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
@@ -161,14 +184,14 @@ const Maintenance = () => {
 
       {/* Maintenance Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center p-3 md:p-6 bg-slate-900/40 backdrop-blur-sm">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md p-5 md:p-8 max-h-[92vh] overflow-y-auto"
           >
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold text-slate-900">Record Maintenance</h2>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl md:text-2xl font-bold text-slate-900">Record Maintenance</h2>
               <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-slate-100 rounded-full">
                 <Plus className="rotate-45" />
               </button>

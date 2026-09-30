@@ -61,40 +61,40 @@ const RoleSelectionModal = ({ isOpen, onRoleSelected }) => {
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 backdrop-blur-md bg-slate-900/60">
+            <div className="fixed inset-0 z-[110] flex items-end sm:items-center justify-center p-3 sm:p-6 backdrop-blur-md bg-slate-900/60">
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    initial={{ opacity: 0, scale: 0.95, y: 30 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    className="relative w-full max-w-4xl bg-white rounded-[2.5rem] shadow-2xl overflow-hidden p-12"
+                    className="relative w-full max-w-4xl bg-white rounded-t-3xl sm:rounded-[2.5rem] shadow-2xl max-h-[92vh] overflow-y-auto p-5 sm:p-12"
                 >
-                    <div className="text-center mb-12">
-                        <h2 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">
+                    <div className="text-center mb-6 sm:mb-12">
+                        <h2 className="text-2xl sm:text-4xl font-black text-slate-900 mb-2 sm:mb-4 tracking-tight">
                             Define Your Persona
                         </h2>
-                        <p className="text-slate-500 text-lg max-w-xl mx-auto">
-                            Welcome to the FleetFlow ecosystem. Select your primary responsibility to customize your command center experience.
+                        <p className="text-slate-500 text-xs sm:text-lg max-w-xl mx-auto">
+                            Welcome to FleetFlow. Select your primary role to customize your command center experience.
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6">
                         {roles.map((role) => (
                             <button
                                 key={role.id}
                                 onClick={() => handleSelect(role)}
-                                className={`flex items-start text-left p-6 bg-white border-2 ${role.borderColor} rounded-3xl ${role.hoverColor} transition-all group hover:shadow-xl hover:shadow-slate-200/50`}
+                                className={`flex items-start text-left p-4 sm:p-6 bg-white border-2 ${role.borderColor} rounded-2xl sm:rounded-3xl ${role.hoverColor} transition-all group hover:shadow-xl hover:shadow-slate-200/50`}
                             >
-                                <div className={`w-14 h-14 ${role.color} ${role.textColor} rounded-2xl flex items-center justify-center mr-6 shrink-0 group-hover:scale-110 transition-transform`}>
+                                <div className={`w-11 h-11 sm:w-14 sm:h-14 ${role.color} ${role.textColor} rounded-xl sm:rounded-2xl flex items-center justify-center mr-3.5 sm:mr-6 shrink-0 group-hover:scale-110 transition-transform`}>
                                     {role.icon}
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-bold text-slate-900 mb-1">{role.title}</h3>
-                                    <p className="text-slate-500 text-sm leading-relaxed">{role.description}</p>
+                                    <h3 className="text-base sm:text-xl font-bold text-slate-900 mb-0.5 sm:mb-1">{role.title}</h3>
+                                    <p className="text-slate-500 text-xs sm:text-sm leading-relaxed">{role.description}</p>
                                 </div>
                             </button>
                         ))}
                     </div>
 
-                    <div className="mt-12 text-center text-slate-400 text-sm font-medium">
+                    <div className="mt-6 sm:mt-12 text-center text-slate-400 text-xs sm:text-sm font-medium">
                         You can change your persona later in settings.
                     </div>
                 </motion.div>

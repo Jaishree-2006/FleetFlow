@@ -87,45 +87,45 @@ const Dashboard = () => {
 
   return (
     <Layout title="Command Center">
-      <div className="space-y-10">
-        {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="space-y-6 md:space-y-10">
+        {/* KPI Cards — 2 cols on mobile, 4 on desktop */}
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
           {kpis.map((kpi, i) => (
             <motion.div
               key={kpi.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="glass-card p-6 bg-white border-slate-100 hover:shadow-2xl transition-all group"
+              className="glass-card p-4 md:p-6 bg-white border-slate-100 hover:shadow-2xl transition-all group"
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className={`w-12 h-12 ${kpi.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                  {React.cloneElement(kpi.icon, { size: 24 })}
+              <div className="flex items-start justify-between mb-3 md:mb-4">
+                <div className={`w-9 h-9 md:w-12 md:h-12 ${kpi.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                  {React.cloneElement(kpi.icon, { size: 18 })}
                 </div>
-                <div className={`flex items-center gap-1 font-bold text-sm ${kpi.trend.startsWith('+') ? 'text-success-500' : kpi.trend.startsWith('-') ? 'text-error-500' : 'text-slate-400'}`}>
-                  {kpi.trend.startsWith('+') ? <TrendingUp size={16} /> : null}
+                <div className={`flex items-center gap-1 font-bold text-xs ${kpi.trend.startsWith('+') ? 'text-success-500' : kpi.trend.startsWith('-') ? 'text-error-500' : 'text-slate-400'}`}>
+                  {kpi.trend.startsWith('+') ? <TrendingUp size={12} /> : null}
                   <span>{kpi.trend}</span>
                 </div>
               </div>
-              <div className="space-y-1">
-                <h3 className="text-slate-500 font-medium text-sm">{kpi.label}</h3>
+              <div className="space-y-0.5">
+                <h3 className="text-slate-500 font-medium text-xs">{kpi.label}</h3>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-bold text-slate-900">{kpi.value}</span>
-                  {kpi.unit && <span className="text-lg font-bold text-slate-400">{kpi.unit}</span>}
+                  <span className="text-2xl md:text-3xl font-bold text-slate-900">{kpi.value}</span>
+                  {kpi.unit && <span className="text-sm md:text-lg font-bold text-slate-400">{kpi.unit}</span>}
                 </div>
-                <p className="text-xs text-slate-400 font-medium">{kpi.sub}</p>
+                <p className="text-xs text-slate-400 font-medium hidden md:block">{kpi.sub}</p>
               </div>
             </motion.div>
           ))}
         </div>
 
         {/* Global Filter Bar */}
-        <div className="glass-card p-4 bg-white border-slate-100 flex flex-wrap gap-4 items-center shadow-sm">
-          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2">Global Filters:</span>
+        <div className="glass-card p-3 md:p-4 bg-white border-slate-100 flex flex-wrap gap-3 items-center shadow-sm">
+          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Filters:</span>
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
-            className="h-10 px-4 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 outline-none focus:ring-2 focus:ring-primary-500 transition-all cursor-pointer min-w-[160px]"
+            className="h-9 px-3 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 outline-none focus:ring-2 focus:ring-primary-500 transition-all cursor-pointer flex-1 min-w-[120px]"
           >
             <option>All Vehicle Types</option>
             <option>Trucks</option>
@@ -134,31 +134,63 @@ const Dashboard = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="h-10 px-4 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 outline-none focus:ring-2 focus:ring-primary-500 transition-all cursor-pointer min-w-[160px]"
+            className="h-9 px-3 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 outline-none focus:ring-2 focus:ring-primary-500 transition-all cursor-pointer flex-1 min-w-[120px]"
           >
             <option>All Statuses</option>
             <option>Available</option>
             <option>On Trip</option>
             <option>In Shop</option>
           </select>
-          <div className="flex-1" />
           <button
             onClick={() => { setFilterType('All Vehicle Types'); setFilterStatus('All Statuses'); }}
-            className="h-10 px-6 text-xs font-bold text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+            className="h-9 px-4 text-xs font-bold text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
           >
-            Reset Filters
+            Reset
           </button>
         </div>
 
-        {/* Overview Tables */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Overview — stacks on mobile */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           {/* Recent Trips */}
           <div className="glass-card overflow-hidden bg-white border-slate-100">
-            <div className="p-6 border-b border-slate-50 flex items-center justify-between">
+            <div className="p-4 md:p-6 border-b border-slate-50 flex items-center justify-between">
               <h2 className="font-bold text-slate-900">Recent Trips</h2>
               <button className="text-sm font-bold text-primary-600 hover:underline">View All</button>
             </div>
-            <div className="overflow-x-auto">
+
+            {/* Mobile: card list */}
+            <div className="md:hidden divide-y divide-slate-50">
+              {trips
+                .filter(t => {
+                  const v = t.vehicles;
+                  if (!v) return true;
+                  const matchesStatus = filterStatus === 'All Statuses' || v.status === filterStatus;
+                  const vehicleType = v.type || (v.name.toLowerCase().includes('van') ? 'Van' : 'Truck');
+                  const matchesType = filterType === 'All Vehicle Types' || (filterType === 'Trucks' && vehicleType === 'Truck') || (filterType === 'Vans' && vehicleType === 'Van');
+                  return matchesStatus && matchesType;
+                })
+                .slice(0, 5)
+                .map((trip) => (
+                  <div key={trip.id} className="p-4 flex items-center justify-between">
+                    <div>
+                      <div className="font-semibold text-slate-900 text-sm">{trip.vehicles?.name}</div>
+                      <div className="text-xs text-slate-400">{trip.drivers?.name}</div>
+                    </div>
+                    <div className="text-right">
+                      <span className={`status-pill text-[10px] ${trip.status === 'Dispatched' ? 'status-on-trip' : trip.status === 'Completed' ? 'status-available' : 'bg-slate-100 text-slate-500'}`}>
+                        {trip.status}
+                      </span>
+                      <div className="text-xs font-bold text-slate-900 mt-1">${trip.revenue}</div>
+                    </div>
+                  </div>
+                ))}
+              {trips.length === 0 && (
+                <div className="py-12 text-center text-slate-400 italic text-sm">No recent trips found.</div>
+              )}
+            </div>
+
+            {/* Desktop: table */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left">
                 <thead className="bg-slate-50/50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
                   <tr>
@@ -173,14 +205,10 @@ const Dashboard = () => {
                     .filter(t => {
                       const v = t.vehicles;
                       if (!v) return true;
-
                       const matchesStatus = filterStatus === 'All Statuses' || v.status === filterStatus;
                       const vehicleType = v.type || (v.name.toLowerCase().includes('van') || v.name.toLowerCase().includes('ford') ? 'Van' : 'Truck');
                       const matchesType = filterType === 'All Vehicle Types' || (filterType === 'Trucks' && vehicleType === 'Truck') || (filterType === 'Vans' && vehicleType === 'Van');
-                      const matchesSearch = !searchQuery ||
-                        v.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        t.drivers?.name?.toLowerCase().includes(searchQuery.toLowerCase());
-
+                      const matchesSearch = !searchQuery || v.name.toLowerCase().includes(searchQuery.toLowerCase()) || t.drivers?.name?.toLowerCase().includes(searchQuery.toLowerCase());
                       return matchesStatus && matchesType && matchesSearch;
                     })
                     .slice(0, 5)
@@ -189,9 +217,7 @@ const Dashboard = () => {
                         <td className="px-6 py-4 font-medium text-slate-900">{trip.vehicles?.name}</td>
                         <td className="px-6 py-4 text-slate-600">{trip.drivers?.name}</td>
                         <td className="px-6 py-4">
-                          <span className={`status-pill ${trip.status === 'Dispatched' ? 'status-on-trip' :
-                            trip.status === 'Completed' ? 'status-available' : 'bg-slate-100 text-slate-500'
-                            }`}>
+                          <span className={`status-pill ${trip.status === 'Dispatched' ? 'status-on-trip' : trip.status === 'Completed' ? 'status-available' : 'bg-slate-100 text-slate-500'}`}>
                             {trip.status}
                           </span>
                         </td>
@@ -199,9 +225,7 @@ const Dashboard = () => {
                       </tr>
                     ))}
                   {trips.length === 0 && (
-                    <tr>
-                      <td colSpan="4" className="px-6 py-20 text-center text-slate-400 italic">No recent trips found.</td>
-                    </tr>
+                    <tr><td colSpan="4" className="px-6 py-20 text-center text-slate-400 italic">No recent trips found.</td></tr>
                   )}
                 </tbody>
               </table>
@@ -210,11 +234,29 @@ const Dashboard = () => {
 
           {/* Vehicles Needing Attention */}
           <div className="glass-card overflow-hidden bg-white border-slate-100">
-            <div className="p-6 border-b border-slate-50 flex items-center justify-between">
+            <div className="p-4 md:p-6 border-b border-slate-50 flex items-center justify-between">
               <h2 className="font-bold text-slate-900">Vehicles Needing Attention</h2>
               <AlertTriangle size={18} className="text-warning-500" />
             </div>
-            <div className="overflow-x-auto">
+
+            {/* Mobile: card list */}
+            <div className="md:hidden divide-y divide-slate-50">
+              {vehicles.filter(v => v.status === 'In Shop').map((v) => (
+                <div key={v.id} className="p-4 flex items-center justify-between">
+                  <div>
+                    <div className="font-semibold text-slate-900 text-sm">{v.name}</div>
+                    <div className="text-xs text-warning-600 font-medium">Scheduled Maintenance</div>
+                  </div>
+                  <span className="status-pill status-in-shop text-[10px]">In Shop</span>
+                </div>
+              ))}
+              {vehicles.filter(v => v.status === 'In Shop').length === 0 && (
+                <div className="py-12 text-center text-slate-400 italic text-sm">All vehicles are healthy.</div>
+              )}
+            </div>
+
+            {/* Desktop: table */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left">
                 <thead className="bg-slate-50/50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
                   <tr>
@@ -230,22 +272,17 @@ const Dashboard = () => {
                       const vehicleType = v.type || (v.name.toLowerCase().includes('van') || v.name.toLowerCase().includes('ford') ? 'Van' : 'Truck');
                       const matchesType = filterType === 'All Vehicle Types' || (filterType === 'Trucks' && vehicleType === 'Truck') || (filterType === 'Vans' && vehicleType === 'Van');
                       const matchesSearch = !searchQuery || v.name.toLowerCase().includes(searchQuery.toLowerCase());
-
                       return matchesBase && matchesType && matchesSearch;
                     })
                     .map((v) => (
                       <tr key={v.id} className="hover:bg-slate-50 transition-colors">
                         <td className="px-6 py-4 font-medium text-slate-900">{v.name}</td>
                         <td className="px-6 py-4 text-warning-600 font-medium">Scheduled Maintenance</td>
-                        <td className="px-6 py-4">
-                          <span className="status-pill status-in-shop">In Shop</span>
-                        </td>
+                        <td className="px-6 py-4"><span className="status-pill status-in-shop">In Shop</span></td>
                       </tr>
                     ))}
                   {vehicles.filter(v => v.status === 'In Shop').length === 0 && (
-                    <tr>
-                      <td colSpan="3" className="px-6 py-20 text-center text-slate-400 italic">All vehicles are healthy.</td>
-                    </tr>
+                    <tr><td colSpan="3" className="px-6 py-20 text-center text-slate-400 italic">All vehicles are healthy.</td></tr>
                   )}
                 </tbody>
               </table>
@@ -258,3 +295,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

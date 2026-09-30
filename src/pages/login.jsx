@@ -44,9 +44,9 @@ export default function Login() {
       <Navbar />
       <div className="flex flex-col items-center justify-center py-24">
         {/* Modal Style Login */}
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
-          <form className="bg-white p-8 rounded-2xl shadow-xl w-96 relative" onSubmit={handleLogin}>
-            <h2 className="text-3xl font-bold mb-6 text-blue-600 text-center">Sign In</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50 p-4">
+          <form className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl w-full max-w-sm relative" onSubmit={handleLogin}>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-blue-600 text-center">Sign In</h2>
             <input
               type="email"
               placeholder="Email"

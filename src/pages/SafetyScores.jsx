@@ -107,40 +107,91 @@ const SafetyScores = () => {
 
     return (
         <Layout title="Safety Scores">
-            <div className="space-y-10">
-                {/* KPI Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="space-y-6 md:space-y-10">
+                {/* KPI Cards — 2 cols mobile */}
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                     {kpis.map((kpi, i) => (
                         <motion.div
                             key={kpi.label}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1 }}
-                            className="glass-card p-6 bg-white border-slate-100 hover:shadow-2xl transition-all group"
+                            className="glass-card p-4 md:p-6 bg-white border-slate-100 hover:shadow-2xl transition-all group"
                         >
-                            <div className="flex items-start justify-between mb-4">
-                                <div className={`w-12 h-12 ${kpi.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                                    {React.cloneElement(kpi.icon, { size: 24 })}
+                            <div className="flex items-start justify-between mb-3">
+                                <div className={`w-9 h-9 md:w-12 md:h-12 ${kpi.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                                    {React.cloneElement(kpi.icon, { size: 20 })}
                                 </div>
-                                <div className={`flex items-center gap-1 font-bold text-sm ${kpi.trend.startsWith('+') ? 'text-success-500' : kpi.trend.startsWith('-') ? 'text-error-500' : 'text-slate-400'}`}>
-                                    {kpi.trend.startsWith('+') ? <TrendingUp size={16} /> : null}
-                                    <span>{kpi.trend}</span>
+                                <div className={`flex items-center gap-0.5 font-bold text-xs md:text-sm ${kpi.trend.startsWith('+') ? 'text-success-500' : kpi.trend.startsWith('-') ? 'text-error-500' : 'text-slate-400'}`}>
+                                    {kpi.trend.startsWith('+') ? <TrendingUp size={14} /> : null}
+                                    <span className="text-[11px] md:text-sm">{kpi.trend}</span>
                                 </div>
                             </div>
-                            <div className="space-y-1">
-                                <h3 className="text-slate-500 font-medium text-sm">{kpi.label}</h3>
+                            <div className="space-y-0.5">
+                                <h3 className="text-slate-500 font-medium text-xs md:text-sm truncate">{kpi.label}</h3>
                                 <div className="flex items-baseline gap-1">
-                                    <span className="text-3xl font-bold text-slate-900">{kpi.value}</span>
-                                    {kpi.unit && <span className="text-lg font-bold text-slate-400">{kpi.unit}</span>}
+                                    <span className="text-2xl md:text-3xl font-black text-slate-900">{kpi.value}</span>
+                                    {kpi.unit && <span className="text-sm md:text-lg font-bold text-slate-400">{kpi.unit}</span>}
                                 </div>
-                                <p className="text-xs text-slate-400 font-medium">{kpi.sub}</p>
+                                <p className="text-[10px] md:text-xs text-slate-400 font-medium truncate">{kpi.sub}</p>
                             </div>
                         </motion.div>
                     ))}
                 </div>
 
-                {/* Driver Safety Table */}
-                <div className="glass-card overflow-hidden bg-white border-slate-100">
+                {/* Driver Safety — Mobile Cards */}
+                <div className="md:hidden space-y-3">
+                    <div className="px-1 flex items-center justify-between">
+                        <h2 className="font-bold text-slate-900 text-base">Driver Behavior Scores</h2>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase">Lowest scores first</span>
+                    </div>
+                    {driversWithScores.map((driver) => (
+                        <div key={driver.id} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm space-y-3">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2.5">
+                                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-sm
+                                        ${driver.safetyScore >= 85 ? 'bg-success-50 text-success-600' :
+                                          driver.safetyScore >= 70 ? 'bg-warning-50 text-warning-600' :
+                                          'bg-error-50 text-error-600'}`}>
+                                        {driver.name.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <span className="font-bold text-slate-900 text-sm block">{driver.name}</span>
+                                        <span className="text-[11px] text-slate-400">{driver.status}</span>
+                                    </div>
+                                </div>
+                                <ScoreBadge score={driver.safetyScore} />
+                            </div>
+
+                            <ScoreBar score={driver.safetyScore} />
+
+                            <div className="grid grid-cols-3 gap-2 bg-slate-50 rounded-xl p-2.5 text-center text-xs">
+                                <div>
+                                    <span className="text-[10px] text-slate-400 block font-semibold">Completion</span>
+                                    <span className="font-bold text-slate-800">{driver.completionRate}%</span>
+                                </div>
+                                <div>
+                                    <span className="text-[10px] text-slate-400 block font-semibold">Speeding</span>
+                                    <span className={`font-bold ${driver.speedingEvents > 0 ? 'text-warning-600' : 'text-slate-400'}`}>
+                                        {driver.speedingEvents || 0}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span className="text-[10px] text-slate-400 block font-semibold">Incidents</span>
+                                    <span className={`font-bold ${driver.incidents > 0 ? 'text-error-600' : 'text-slate-400'}`}>
+                                        {driver.incidents || 0}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                    {driversWithScores.length === 0 && (
+                        <div className="text-center py-8 text-sm text-slate-400">No driver score records found.</div>
+                    )}
+                </div>
+
+                {/* Driver Safety Table — Desktop */}
+                <div className="hidden md:block glass-card overflow-hidden bg-white border-slate-100">
                     <div className="p-6 border-b border-slate-50 flex items-center justify-between">
                         <div>
                             <h2 className="font-bold text-slate-900">Driver Behavior Scores</h2>

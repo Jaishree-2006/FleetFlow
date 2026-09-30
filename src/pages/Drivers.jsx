@@ -42,15 +42,15 @@ const Drivers = () => {
 
   return (
     <Layout title="Driver Management">
-      <div className="space-y-8">
-        <div className="flex justify-between items-center">
+      <div className="space-y-6 md:space-y-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h2 className="text-xl font-bold text-slate-900">Operator Registry</h2>
-            <p className="text-sm text-slate-500">Monitoring compliance and performance scores</p>
+            <p className="text-xs sm:text-sm text-slate-500">Monitoring compliance and performance scores</p>
           </div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="btn-primary flex items-center gap-2"
+            className="btn-primary flex items-center justify-center gap-2 w-full sm:w-auto"
           >
             <Plus size={20} />
             Add New Driver
@@ -58,7 +58,7 @@ const Drivers = () => {
         </div>
 
         {/* Global Search Feedback */}
-        <div className="relative max-w-md">
+        <div className="relative w-full max-w-md">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
           <input
             type="text"
@@ -67,18 +67,17 @@ const Drivers = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-12 pr-4 h-12 bg-white border border-slate-200 rounded-xl text-slate-900 outline-none focus:ring-2 focus:ring-primary-500 transition-all shadow-sm"
           />
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Global Enabled</div>
         </div>
 
         {/* Drivers Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {drivers
             .filter(d => d.name.toLowerCase().includes(searchQuery.toLowerCase()))
             .map((driver) => (
               <motion.div
                 key={driver.id}
                 whileHover={{ y: -5 }}
-                className="glass-card bg-white border-slate-100 p-8 flex flex-col justify-between group"
+                className="glass-card bg-white border-slate-100 p-5 md:p-8 flex flex-col justify-between group shadow-sm"
               >
                 <div>
                   <div className="flex justify-between items-start mb-6">
@@ -222,14 +221,14 @@ const Drivers = () => {
 
       {/* Add Driver Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center p-3 md:p-6 bg-slate-900/40 backdrop-blur-sm">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md p-5 md:p-8 max-h-[92vh] overflow-y-auto"
           >
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold text-slate-900">Register Driver</h2>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl md:text-2xl font-bold text-slate-900">Register Driver</h2>
               <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-slate-100 rounded-full">
                 <Plus className="rotate-45" />
               </button>

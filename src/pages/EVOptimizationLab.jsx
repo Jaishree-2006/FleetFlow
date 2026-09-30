@@ -81,11 +81,11 @@ const EVOptimizationLab = () => {
 
     return (
         <Layout title="AI Fleet Optimization Lab">
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-[calc(100vh-180px)]">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 md:gap-6">
 
                 {/* Main Map / Planning Area */}
-                <div className="lg:col-span-3 flex flex-col gap-6">
-                    <div className="glass-card bg-white border-slate-100 flex-1 relative overflow-hidden rounded-[2rem] shadow-xl border-2 border-primary-50">
+                <div className="lg:col-span-3 flex flex-col gap-4 md:gap-6">
+                    <div className="glass-card bg-white border-slate-100 min-h-[360px] relative overflow-hidden rounded-2xl md:rounded-[2rem] shadow-xl border-2 border-primary-50">
                         {/* Map Placeholder Background */}
                         <div className="absolute inset-0 bg-slate-50 opacity-50 overflow-hidden">
                             <div className="absolute inset-0" style={{
@@ -93,103 +93,103 @@ const EVOptimizationLab = () => {
                                 backgroundSize: '40px 40px'
                             }}></div>
                             <div className="w-full h-full flex items-center justify-center">
-                                <MapIcon className="w-96 h-96 text-slate-100 opacity-20" />
+                                <MapIcon className="w-64 h-64 md:w-96 md:h-96 text-slate-100 opacity-20" />
                             </div>
                         </div>
 
                         {/* Interactive Layer */}
-                        <div className="relative z-10 p-8 h-full flex flex-col">
-                            <div className="flex justify-between items-start mb-8">
+                        <div className="relative z-10 p-4 md:p-8 h-full flex flex-col justify-between">
+                            <div className="flex flex-col sm:flex-row justify-between items-start gap-2 mb-6">
                                 <div>
-                                    <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                                        <Navigation className="text-primary-600" size={24} />
+                                    <h3 className="text-lg md:text-xl font-bold text-slate-900 flex items-center gap-2">
+                                        <Navigation className="text-primary-600" size={22} />
                                         Dynamic Route Simulation
                                     </h3>
-                                    <p className="text-sm text-slate-500 mt-1">Drag vehicles to optimize deployment zones</p>
+                                    <p className="text-xs text-slate-500 mt-0.5">Drag vehicles to optimize deployment zones</p>
                                 </div>
                                 <div className="flex gap-2">
-                                    <div className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full text-xs font-bold border border-emerald-100 flex items-center gap-2">
+                                    <div className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-xs font-bold border border-emerald-100 flex items-center gap-2">
                                         <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                                        VA-GAT Predictions Live
+                                        VA-GAT Live
                                     </div>
                                 </div>
                             </div>
 
                             {/* Draggable Area */}
-                            <div className="flex-1 grid grid-cols-4 gap-8 pointer-events-none">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 pointer-events-none mb-4">
                                 {displayVehicles.map((v, i) => (
                                     <motion.div
                                         key={v.id}
                                         drag
-                                        dragConstraints={{ left: 0, right: 800, top: 0, bottom: 400 }}
-                                        whileDrag={{ scale: 1.1, zIndex: 50 }}
-                                        className="pointer-events-auto h-32 bg-white rounded-2xl shadow-lg border border-slate-100 p-4 flex flex-col justify-between cursor-grab active:cursor-grabbing w-full min-w-[180px]"
+                                        dragConstraints={{ left: 0, right: 300, top: 0, bottom: 200 }}
+                                        whileDrag={{ scale: 1.05, zIndex: 50 }}
+                                        className="pointer-events-auto h-28 md:h-32 bg-white rounded-xl md:rounded-2xl shadow-md border border-slate-100 p-3 md:p-4 flex flex-col justify-between cursor-grab active:cursor-grabbing w-full"
                                     >
                                         <div className="flex justify-between items-start">
-                                            <div className="w-10 h-10 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center">
-                                                <Truck size={20} />
+                                            <div className="w-8 h-8 md:w-10 md:h-10 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center">
+                                                <Truck size={18} />
                                             </div>
-                                            <div className="text-[10px] font-black text-emerald-500 bg-emerald-50 px-2 py-1 rounded-full uppercase">
+                                            <div className="text-[9px] md:text-[10px] font-black text-emerald-500 bg-emerald-50 px-1.5 py-0.5 rounded-full uppercase">
                                                 {Math.floor(Math.random() * 40 + 60)}% SOC
                                             </div>
                                         </div>
                                         <div>
-                                            <div className="font-bold text-slate-900 text-sm truncate">{v.name}</div>
-                                            <div className="text-[10px] text-slate-400 font-medium uppercase tracking-wider">{v.plate}</div>
+                                            <div className="font-bold text-slate-900 text-xs md:text-sm truncate">{v.name}</div>
+                                            <div className="text-[9px] md:text-[10px] text-slate-400 font-medium uppercase tracking-wider">{v.plate}</div>
                                         </div>
                                     </motion.div>
                                 ))}
                             </div>
 
                             {/* Map Controls */}
-                            <div className="absolute bottom-8 right-8 flex flex-col gap-2">
-                                <button className="p-3 bg-white shadow-lg border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors text-slate-600">
-                                    <RefreshCw size={20} />
+                            <div className="flex justify-end gap-2">
+                                <button className="p-2.5 bg-white shadow-md border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors text-slate-600">
+                                    <RefreshCw size={18} />
                                 </button>
-                                <button className="p-3 bg-white shadow-lg border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors text-slate-600">
-                                    <MapPin size={20} />
+                                <button className="p-2.5 bg-white shadow-md border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors text-slate-600">
+                                    <MapPin size={18} />
                                 </button>
                             </div>
                         </div>
                     </div>
 
                     {/* Bottom Insights */}
-                    <div className="grid grid-cols-3 gap-6">
-                        <div className="glass-card bg-white border-slate-100 p-6 rounded-2xl shadow-sm flex items-center gap-4">
-                            <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
-                                <Battery size={24} />
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6">
+                        <div className="glass-card bg-white border-slate-100 p-4 md:p-6 rounded-2xl shadow-sm flex items-center gap-3">
+                            <div className="w-10 h-10 md:w-12 md:h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center shrink-0">
+                                <Battery size={20} />
                             </div>
                             <div>
                                 <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Fleet Power</div>
-                                <div className="text-xl font-bold text-slate-900">1.2 MW/h</div>
+                                <div className="text-lg md:text-xl font-bold text-slate-900">1.2 MW/h</div>
                             </div>
                         </div>
-                        <div className="glass-card bg-white border-slate-100 p-6 rounded-2xl shadow-sm flex items-center gap-4">
-                            <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center">
-                                <TrendingUp size={24} />
+                        <div className="glass-card bg-white border-slate-100 p-4 md:p-6 rounded-2xl shadow-sm flex items-center gap-3">
+                            <div className="w-10 h-10 md:w-12 md:h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center shrink-0">
+                                <TrendingUp size={20} />
                             </div>
                             <div>
                                 <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Growth Potential</div>
-                                <div className="text-xl font-bold text-slate-900">+18.5%</div>
+                                <div className="text-lg md:text-xl font-bold text-slate-900">+18.5%</div>
                             </div>
                         </div>
-                        <div className="glass-card bg-white border-slate-100 p-6 rounded-2xl shadow-sm flex items-center gap-4">
-                            <div className="w-12 h-12 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center">
-                                <AlertCircle size={24} />
+                        <div className="glass-card bg-white border-slate-100 p-4 md:p-6 rounded-2xl shadow-sm flex items-center gap-3">
+                            <div className="w-10 h-10 md:w-12 md:h-12 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center shrink-0">
+                                <AlertCircle size={20} />
                             </div>
                             <div>
                                 <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Risk Factor</div>
-                                <div className="text-xl font-bold text-slate-900">Minimal</div>
+                                <div className="text-lg md:text-xl font-bold text-slate-900">Minimal</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Sidebar Controls & Simulation */}
-                <div className="flex flex-col gap-6 lg:col-span-2">
-                    <div className="glass-card bg-white border-slate-100 flex-1 rounded-[2rem] shadow-xl p-8 flex flex-col">
-                        <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-                            <Zap className="text-primary-600" size={24} />
+                <div className="flex flex-col gap-4 md:gap-6 lg:col-span-2">
+                    <div className="glass-card bg-white border-slate-100 flex-1 rounded-2xl md:rounded-[2rem] shadow-xl p-5 md:p-8 flex flex-col">
+                        <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-4 md:mb-6 flex items-center gap-2">
+                            <Zap className="text-primary-600" size={22} />
                             Simulation Engine
                         </h3>
 

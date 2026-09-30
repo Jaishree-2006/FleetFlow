@@ -94,7 +94,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-3 sm:p-6">
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -103,10 +103,10 @@ const AuthModal = ({ isOpen, onClose }) => {
                     className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
                 />
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                    initial={{ opacity: 0, scale: 0.95, y: 30 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                    className={`relative w-full ${isSignUp ? 'max-w-3xl' : 'max-w-md'} bg-white rounded-3xl shadow-2xl overflow-hidden p-8 transition-all duration-500`}
+                    exit={{ opacity: 0, scale: 0.95, y: 30 }}
+                    className={`relative w-full ${isSignUp ? 'max-w-3xl' : 'max-w-md'} bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[92vh] overflow-y-auto p-5 sm:p-8 transition-all duration-300`}
                 >
                     <button
                         onClick={onClose}

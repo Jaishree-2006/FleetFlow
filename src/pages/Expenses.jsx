@@ -71,119 +71,146 @@ const Expenses = () => {
 
   return (
     <Layout title="Expenses & Fuel">
-      <div className="space-y-10">
+      <div className="space-y-6 md:space-y-10">
         {/* Header Summary */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="glass-card p-8 bg-white border-slate-100 col-span-2 flex justify-between items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="glass-card p-5 md:p-8 bg-white border-slate-100 col-span-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Total Operational Cost</h2>
+              <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Total Operational Cost</h2>
               <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-black text-slate-900">
+                <span className="text-3xl md:text-4xl font-black text-slate-900">
                   ${expenseLogs.reduce((sum, e) => sum + parseFloat(e.amount), 0).toLocaleString()}
                 </span>
                 <span className="text-success-500 font-bold flex items-center gap-1 text-sm bg-success-50 px-2 py-0.5 rounded-full">
                   <TrendingDown size={14} /> 12%
                 </span>
               </div>
-              <p className="text-slate-400 text-xs mt-4 font-medium italic">Aggregated from all logged fuel and maintenance entries.</p>
+              <p className="text-slate-400 text-xs mt-3 font-medium">Aggregated from all logged fuel and maintenance entries.</p>
             </div>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="btn-primary h-14 px-8 rounded-2xl flex items-center gap-2 shadow-xl shadow-primary-500/10"
+              className="btn-primary w-full sm:w-auto h-12 sm:h-14 px-6 sm:px-8 rounded-2xl flex items-center justify-center gap-2 shadow-xl shadow-primary-500/10"
             >
-              <Plus size={24} /> Log Fuel Entry
+              <Plus size={20} /> Log Fuel Entry
             </button>
           </div>
 
-          <div className="glass-card p-6 bg-white border-slate-100 text-slate-900">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Top Spending Vehicle</h3>
+          <div className="glass-card p-5 md:p-6 bg-white border-slate-100 text-slate-900">
+            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Top Spending Vehicle</h3>
             {vehicleStats[0] ? (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-lg font-bold">{vehicleStats[0].name}</span>
-                  <span className="text-2xl font-black text-primary-600">${vehicleStats[0].total.toLocaleString()}</span>
+                  <span className="text-base md:text-lg font-bold truncate">{vehicleStats[0].name}</span>
+                  <span className="text-xl md:text-2xl font-black text-primary-600">${vehicleStats[0].total.toLocaleString()}</span>
                 </div>
                 <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                   <div className="h-full bg-primary-500 w-[85%]" />
                 </div>
               </div>
             ) : (
-              <p className="text-slate-500 italic">No data yet.</p>
+              <p className="text-slate-500 italic text-sm">No data yet.</p>
             )}
           </div>
         </div>
 
         {/* Expense History */}
-        <div className="glass-card bg-white border-slate-100 overflow-hidden">
-          <div className="p-6 border-b border-slate-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <h2 className="font-bold text-slate-900">Expense History</h2>
-            <div className="flex flex-col sm:flex-row border border-slate-100 rounded-xl overflow-hidden p-1 gap-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                <input
-                  type="text"
-                  placeholder="Search by vehicle..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 pr-4 h-9 w-full sm:w-48 bg-slate-50 border-none rounded-lg text-xs outline-none focus:ring-1 focus:ring-primary-500 transition-all font-medium"
-                />
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <span className="status-pill status-available cursor-pointer">Fuel</span>
-              <span className="status-pill status-in-shop cursor-pointer">Maintenance</span>
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <h2 className="font-bold text-slate-900 text-lg">Expense History</h2>
+            <div className="relative w-full sm:w-60">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+              <input
+                type="text"
+                placeholder="Search by vehicle..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-9 pr-4 h-10 w-full bg-white border border-slate-200 rounded-xl text-xs outline-none focus:ring-1 focus:ring-primary-500 transition-all font-medium shadow-sm"
+              />
             </div>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
-                <tr>
-                  <th className="px-8 py-5">Vehicle</th>
-                  <th className="px-8 py-5">Type</th>
-                  <th className="px-8 py-5">Details</th>
-                  <th className="px-8 py-5">Amount</th>
-                  <th className="px-8 py-5">Date</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50">
-                {expenseLogs
-                  .filter(e =>
-                    e.vehicles?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    e.type.toLowerCase().includes(searchQuery.toLowerCase())
-                  )
-                  .map((log) => (
-                    <tr key={log.id} className="hover:bg-slate-50/50 transition-colors">
-                      <td className="px-8 py-6 font-bold text-slate-900">{log.vehicles?.name}</td>
-                      <td className="px-8 py-6">
-                        <span className={`status-pill ${log.type === 'Fuel' ? 'status-available' : 'status-in-shop'}`}>
-                          {log.type}
-                        </span>
-                      </td>
-                      <td className="px-8 py-6 text-slate-500">
-                        {log.type === 'Fuel' ? `${log.liters} Liters` : 'Maintenance Service'}
-                      </td>
-                      <td className="px-8 py-6 font-black text-slate-900">${log.amount.toLocaleString()}</td>
-                      <td className="px-8 py-6 text-slate-400 text-xs font-medium">
-                        {new Date(log.created_at).toDateString()}
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+
+          {/* Expenses — Mobile Cards */}
+          <div className="md:hidden space-y-3">
+            {expenseLogs
+              .filter(e =>
+                e.vehicles?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                e.type?.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map((log) => (
+                <div key={log.id} className="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-slate-900 text-sm">{log.vehicles?.name || 'Vehicle'}</span>
+                    <span className={`status-pill ${log.type === 'Fuel' ? 'status-available' : 'status-in-shop'}`}>
+                      {log.type}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs text-slate-500">
+                    <span>{log.type === 'Fuel' ? `${log.liters} Liters` : 'Maintenance Service'}</span>
+                    <span className="font-black text-slate-900 text-base">${log.amount?.toLocaleString()}</span>
+                  </div>
+                  <div className="text-[11px] text-slate-400 border-t border-slate-50 pt-2">
+                    {new Date(log.created_at).toDateString()}
+                  </div>
+                </div>
+              ))}
+            {expenseLogs.length === 0 && (
+              <div className="text-center py-8 text-sm text-slate-400">No expenses recorded yet.</div>
+            )}
+          </div>
+
+          {/* Expense History — Desktop */}
+          <div className="hidden md:block glass-card bg-white border-slate-100 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead className="bg-slate-50 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                  <tr>
+                    <th className="px-8 py-5">Vehicle</th>
+                    <th className="px-8 py-5">Type</th>
+                    <th className="px-8 py-5">Details</th>
+                    <th className="px-8 py-5">Amount</th>
+                    <th className="px-8 py-5">Date</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-50">
+                  {expenseLogs
+                    .filter(e =>
+                      e.vehicles?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      e.type?.toLowerCase().includes(searchQuery.toLowerCase())
+                    )
+                    .map((log) => (
+                      <tr key={log.id} className="hover:bg-slate-50/50 transition-colors">
+                        <td className="px-8 py-6 font-bold text-slate-900">{log.vehicles?.name}</td>
+                        <td className="px-8 py-6">
+                          <span className={`status-pill ${log.type === 'Fuel' ? 'status-available' : 'status-in-shop'}`}>
+                            {log.type}
+                          </span>
+                        </td>
+                        <td className="px-8 py-6 text-slate-500">
+                          {log.type === 'Fuel' ? `${log.liters} Liters` : 'Maintenance Service'}
+                        </td>
+                        <td className="px-8 py-6 font-black text-slate-900">${log.amount.toLocaleString()}</td>
+                        <td className="px-8 py-6 text-slate-400 text-xs font-medium">
+                          {new Date(log.created_at).toDateString()}
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Fuel Entry Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-slate-900/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center p-3 md:p-6 bg-slate-900/40 backdrop-blur-sm">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-t-3xl md:rounded-3xl shadow-2xl w-full max-w-md p-5 md:p-8 max-h-[92vh] overflow-y-auto"
           >
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-bold text-slate-900">New Fuel Entry</h2>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl md:text-2xl font-bold text-slate-900">New Fuel Entry</h2>
               <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-slate-100 rounded-full">
                 <Plus className="rotate-45" />
               </button>
